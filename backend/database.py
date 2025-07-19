@@ -15,46 +15,60 @@ uri = f"mongodb+srv://{MONGO_USER}:{MONGO_PASSWORD}@cluster0.1iw4ni6.mongodb.net
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 
-# Send a ping to confirm a successful connection
 
+# DOCUMENTATION ----------- for passed objects for api endpts
 # Patient structure:
 # {
 #     "_id": ObjectId,
 #     "name": String,
 #     "age": Number,
-#     "sex": String, male or female
-#     "doctor": String, name of the doctor
-#     current_prescriptions: [
+#     "sex": String, # "male" or "female"
+#     "doctor": String, # name of the doctor
+#     "nodes": [ # List of prescribed drugs
 #         {
 #             "drug_name": String, # Example drug entry
+#             "din": Int, # Drug Identification Number
 #             "dosage": String,
 #             "frequency": String,
-#             "time_taken": String
-#             "start_date": Date,
-#             "end_date": Date
+#             "time_taken": String, # format: "HH:MM" (24-hour format)
+#             "start_date": String, # format: "YYYY-MM-DD"
+#             "end_date": String # format: "YYYY-MM-DD"
+#         },
+#         ...
+#     ],
+#     "edges": [ # list of drug interactions
+#         {
+#             "din1": Int, # Drug Identification Number of the first drug
+#             "din2": Int, # Drug Identification Number of the second drug
+#             "interaction_type": String, # Type of interaction (e.g., "antagonistic", "synergistic")
+#             "severity": String, # Severity of the interaction ("mild", "moderate", "severe")
+#             "advanced_info": String, # Additional information description about the interaction
+#             "research_links": [ # List of links to research papers or articles about the interaction
+#                 "https://example.com/research1",
+#                 "https://example.com/research2"
+#             ]
 #         },
 #         ...
 #     ],
 #     "medical_history": [
 #         {
 #             "condition": String,
-#             "diagnosis_date": Date,
+#             "diagnosis_date": String, # format: "YYYY-MM-DD"
 #             "treatment": String,
 #             "notes": String
-#         },d": 
+#         },
 #         ...
 #     ],
 #     "allergies": [
 #         {
 #             "allergen": String,
 #             "reaction": String,
-#             "severity": String, mild, moderate, severe
+#             "severity": String, # "mild", "moderate", "severe"
 #             "notes": String
 #         },
 #         ...
 #     ]
 # }
-
 
 
 def add_patient(patient_data):
