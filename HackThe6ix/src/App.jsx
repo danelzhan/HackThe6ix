@@ -22,7 +22,6 @@ function App() {
       frequency: 'Once daily',
       category: 'prescription'
     },
-    // Add more 
     {
       name: 'Metaformin',
       dosage: '10mg',

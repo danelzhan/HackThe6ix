@@ -79,7 +79,7 @@ const DrugInteractionGraph = ({ medications }) => {
 
     networkRef.current = new Network(containerRef.current, data, options);
 
-   const handleClick = (params) => {
+  const handleClick = (params) => {
       if (params.nodes.length) {
         const nodeId = params.nodes[0];
         const node = nodes.get(nodeId);
