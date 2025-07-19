@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import DrugInteractionGraph from '../Components/DrugInteractionGraph';
 import { Camera } from "./Camera.js";
 
 function App() {
 
   return (
     <div className="app">
-      <DrugInteractionGraph medications={medications} />
+      <DrugInteractionGraph patientEmail="john.doe@email.com" />
       <Camera />
-      {userObj && <div>User: {userObj.name}</div>}
     </div>
   );
 }
