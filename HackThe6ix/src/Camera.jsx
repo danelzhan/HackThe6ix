@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import {main} from "./DrugScanParse.js"
 
 export function Camera({}) {
   const videoRef = useRef(null);
@@ -60,6 +61,7 @@ export function Camera({}) {
         <>
           <img src={photo} alt="Captured" style={{ width: "30rem" }} />
           <button onClick={retakePhoto}>Retake Photo</button>
+          <button onClick={main}>Submit</button>
         </>
       )}
     </div>
