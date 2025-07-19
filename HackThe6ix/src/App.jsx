@@ -1,13 +1,14 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import DrugInteractionGraph from './Components/DrugInteractionGraph';
-import {Camera} from "./Camera.jsx"
-import LoginButton from "./Components/LoginButton.jsx"
-import logoutButton from "./Components/LogoutButton.jsx"
+import { Camera } from "./Camera.jsx";
+import LoginButton from "./Components/LoginButton.jsx";
 import LogoutButton from './Components/LogoutButton.jsx';
 import { useAuth0 } from '@auth0/auth0-react';
 import { postUser, fetchUserByEmail } from './Bridge.js';
 
 function App() {
+  var [userObj, setUserObj] = useState(null); // Add this line
+
   const [medications, setMedications] = useState([
     {
       name: 'Ibuprofen',
@@ -52,8 +53,11 @@ function App() {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      console.log("User email:", user.email);
-      fetchUserByEmail(user.email);
+      (async () => {
+        console.log(user.email)
+        const fetchedUser = await fetchUserByEmail(user.email);
+        setUserObj(fetchedUser);
+      })();
     }
   }, [isAuthenticated, user]);
 
@@ -64,6 +68,7 @@ function App() {
       <h1>Medication Interaction Visualizer</h1>
       <DrugInteractionGraph medications={medications} />
       <Camera />
+      {userObj && <div>User: {userObj.name}</div>}
     </div>
   );
 }

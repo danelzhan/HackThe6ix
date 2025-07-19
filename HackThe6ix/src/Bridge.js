@@ -1,3 +1,5 @@
+import { Patient } from './Objects.js';
+
 export async function postUser() {
     fetch('http://localhost:5000/patients', {
         method: 'POST',
@@ -21,10 +23,8 @@ export async function postUser() {
 }
 
 export async function fetchUserByEmail(email) {
-
-    console.log("Fetching", email)
-    fetch(`http://localhost:5000/patients/${encodeURIComponent(email)}`)
-        .then(response => response.json())
-        .then(data => console.log(data));
-
+    const response = await fetch(`http://localhost:5000/patients/${encodeURIComponent(email)}`);
+    const data = await response.json();
+    console.log(new Patient(data.data))
+    return new Patient(data.data);
 }
