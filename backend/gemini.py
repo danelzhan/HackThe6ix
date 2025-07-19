@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 import random_assets
 import json
 
+
+# set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and add research links that show evidence that these two drugs are safe.
+
 # Load environment variables
 load_dotenv()
 
@@ -57,7 +60,7 @@ Return your answer strictly as a single JSON array. Each object in the array sho
 {{
     "din1": String,               # Canadian Drug Identification Number
     "name": String,               # Name of the food or other substance. {subprompt2}
-    "interaction_type": String,   # Type of interaction (e.g. "delayed absorption", "increased side effects", "nausea", "bleeding")
+    "interaction_type": String,   # Type of interaction (e.g. "delayed absorption", "increased side effects", "nausea", "bleeding". THIS IS LIMITED TO 5 WORDS MAX)
     "severity": String,           # Severity ("mild", "moderate", "severe"). DO NOT overstate the severity. If there may be only cause for concern, label it as "mild" or "moderate" at most.
     "advanced_info": String,      # Scientifically accurate but CONCISE, EASY TO UNDERSTAND, layman-friendly description of the interaction
     "research_links": [           # List of links to research or reference articles (HIGHLY ENCOURAGED)
@@ -86,54 +89,45 @@ def get_all_interactions(drug_object, patient_data):
     """
     Returns a list of all drug interactions between the patient's drugs and the given drug object as edges.
     """
-    interactions = []
+    drug_name1 = drug_object['drug_name']
+    din1 = drug_object['din']
+    drug_names2 = []
     for node in patient_data['nodes']:
         if 'din' not in node:
             print(f"Skipping node {node} as it does not have a 'din' field")
             continue
         if node['din'] == drug_object['din']:
             continue  # Skip the drug itself
-        print(f"Checking interaction between {drug_object['drug_name']} and {node['drug_name']}")
-        interaction = get_drug_interactions(
-            drug_name1=drug_object['drug_name'],
-            drug_name2=node['drug_name'],
-            din1=drug_object['din'],
-            din2=node['din']
-        )
-        if 'error' in interaction:
-            print(f"Error fetching interaction for {drug_object['drug_name']} and {node['drug_name']}: {interaction['error']}")
-            continue # skip this interaction if there's an error
-        interactions.append(interaction)
-    return interactions
-
-def get_drug_interactions(drug_name1, drug_name2, din1, din2):
-    """
-    Consults Gemini to get drug interactions between two DINS.
-    Returns a dict in the format:
-    {
-        "din1": String,
-        "din2": String,
-        "drug_name1": String,
-        "drug_name2": String,
-        "interaction_type": String,
-        "severity": String,
-        "advanced_info": String,
-        "research_links": [ ... ]
-    }
-    """
+        drug_names2.append('('+node['drug_name']+','+node['din']+')')
+    concatenated = '{ ' + ','.join(pair for pair in drug_names2) + ' }'
+    #     print(f"Checking interaction between {drug_object['drug_name']} and {node['drug_name']}")
+    #     interaction = get_drug_interactions(
+    #         drug_name1=drug_object['drug_name'],
+    #         drug_name2=node['drug_name'],
+    #         din1=drug_object['din'],
+    #         din2=node['din']
+    #     )
+    #     if 'error' in interaction:
+    #         print(f"Error fetching interaction for {drug_object['drug_name']} and {node['drug_name']}: {interaction['error']}")
+    #         continue # skip this interaction if there's an error
+    #     if 'none' in interaction :
+    #         print(f"No significant interaction found between {drug_object['drug_name']} and {node['drug_name']}")
+    #         continue  # skip this interaction if there's no significant interaction
+    #     interactions.append(interaction)
+    # return interactions
     prompt = f"""
 You are a pharmaceutical expert AI assistant.
 
-Given two drugs with Drug Names: {drug_name1} and {drug_name2}, and Canadian DIN numbers {din1} and {din2}, please find and summarize any drug interactions between them.
+Given a drug with Drug Name: {drug_name1} and Canadian DIN number {din1}, please find and summarize any drug interactions between it and each of the following drug-din pairs: {concatenated}.
 
-Return your answer **strictly as a single JSON object** with these fields:
+Return your answer **strictly as a JSON LIST** of objects with these fields, one object in the list for each drug-din pair:
 {{
     "din1": String,  # Canadian Drug Identification Number of the first drug
     "din2": String,  # Canadian Drug Identification Number of the second drug
     "drug_name1": String,  # Name of the first drug
     "drug_name2": String,  # Name of the second drug
-    "interaction_type": String,  # Type of interaction (Example: Delayed absorption, Increased side effects, prolongation or bleeding)
-    "severity": String,  # Severity ("none", "mild", "moderate", "major", or "contraindicated")
+    "interaction_type": String,  # Type of interaction (Example: Delayed absorption, Increased side effects, prolongation or bleeding. THIS IS LIMITED TO 5 WORDS MAX)
+    "severity": String,  # Severity (ONLY ONE OF "mild", "moderate", or "major" DO NOT USE any weird combinations or other values)
     "advanced_info": String,  # Concise, layperson-friendly, FACTUAL summary of the interaction. MAKE THIS AS CONCISE AND EASY TO UNDERSTAND AS POSSIBLE. EXPLAIN THE INTERACTION IN SIMPLE TERMS.
     "research_links": [      # List of real, publicly accessible research papers or authoritative sources supporting either the interaction or the safety of these drugs together
         "https://example.com/research1",
@@ -141,13 +135,13 @@ Return your answer **strictly as a single JSON object** with these fields:
     ]
 }}
 
-If no interaction is found, set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and add research links that show evidence that these two drugs are safe.
+If no interaction is found, or if they are safe to take together, omit them from the list. If the list is empty, return an empty JSON array: [].
 If two drugs are commonly co-prescribed, DO NOT overstate the severity. If there may be cause for concern, label it as "mild" or "moderate" at most.
 If you cannot find enough information such that you deem your search inconclusive, or encounter any other error such that you cannot complete this request, return this EXACT JSON object: {{"error": "Inconclusive search"}}
 
-Strictly output only the JSON. Do not add any explanation or text outside the JSON object.
+Strictly output only the JSON list. Do not add any explanation or text outside the JSON object.
     """.strip()
-
+    print(f"Prompt for Gemini: {prompt}")  # Debugging output
     response = model.generate_content(prompt)
     clean = response.text.strip('`json\n').strip('`')
     print(f"Gemini response: {clean}")  # Debugging output

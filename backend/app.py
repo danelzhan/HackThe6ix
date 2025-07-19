@@ -231,8 +231,8 @@ def add_patient_node(patient_id):
                   type: string
                   example: "Aspirin"
                 din:
-                  type: integer
-                  example: 123456789
+                  type: string
+                  example: "12345678"
                 dosage:
                   type: string
                   example: "100mg"
@@ -299,23 +299,31 @@ def add_patient_node(patient_id):
                 "success": False,
                 "error": "Missing patient_id or node data"
             }), 400
-        
+        print("1")
         # Get current patient data
         patient_data = database.get_patient_by_id(patient_id)
+        print("2")
         if not patient_data:
             return jsonify({
                 "success": False,
                 "error": "Patient not found"
             }), 404
         logging.info(f"Current patient data: {patient_data}")
-
-
+        # Check if node already exists
+        for existing_node in patient_data['nodes']:
+            if 'din' in existing_node and existing_node['din'] == node['din']:
+                return jsonify({
+                    "success": False,
+                    "message": "Node already exists for this patient"
+                }), 400
+        print("3")
         # Get interactions of the new node with existing drugs and foods
         foods = gemini.get_food_interactions(
             drug_name1=node['drug_name'],
             din1=node['din'],
             patient_data=patient_data
         )
+        print("4")
         current_foods = []
         for _node in patient_data['nodes']:
             if 'din' in _node:
@@ -518,6 +526,75 @@ def get_patient(patient_id):
 
 @app.route('/patients/remove_node/<patient_id>', methods=['POST'])
 def remove_patient_node(patient_id):
+    """POST endpoint - removes a drug node and related interactions from a patient
+    ---
+    tags:
+      - Patients
+    parameters:
+      - name: patient_id
+        in: path
+        type: string
+        required: true
+        description: Patient's email address
+        example: "john.doe@email.com"
+      - name: node_removal_data
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            din:
+              type: string
+              description: Drug Identification Number of the node to remove
+              example: "02242974"
+          required:
+            - din
+    responses:
+      200:
+        description: Node and related interactions removed successfully
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+            patient_id:
+              type: string
+            nodes_deleted:
+              type: integer
+              description: Number of nodes removed (should be 0 or 1)
+            edges_deleted:
+              type: integer
+              description: Number of interaction edges removed
+      400:
+        description: Missing required data
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+      404:
+        description: Patient or node not found
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            message:
+              type: string
+      500:
+        description: Server error
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            error:
+              type: string
+    """
     try:
         # Get JSON data of node item
         data = request.get_json()
@@ -530,10 +607,18 @@ def remove_patient_node(patient_id):
             }), 400
         
         edges_modified = database.edit_patient(patient_id, {"$pull": {"edges": {"din1": din}}}) # 2 cases: din1 or din2
-        edges_modified = database.edit_patient(patient_id, {"$pull": {"edges": {"din2": din}}})
+        edges_modified += database.edit_patient(patient_id, {"$pull": {"edges": {"din2": din}}})
 
         nodes_modified = database.edit_patient(patient_id, {"$pull": {"nodes": {"din": din}}}) # should always only be either 0 or 1...
-        
+        # remove nodes that dont have edges
+        for node in database.get_patient_by_id(patient_id)['nodes']:
+            if 'din' in node:
+                continue
+            if(database.has_edge_with_name(patient_id, node['name'])):
+                continue
+            database.edit_patient(patient_id, {"$pull": {"nodes": {"name": node['name']}}})
+            print(f"Removed node {node['name']} as it had no edges")
+
         if edges_modified > 0 and nodes_modified == 0:
             return jsonify({
                 "success": False,

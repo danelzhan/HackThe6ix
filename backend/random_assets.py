@@ -46,7 +46,7 @@ sample_patients = [
         "nodes": [
             {
                 "drug_name": "Metformin",
-                "din": 123456789,
+                "din": "12345678",
                 "dosage": "500mg",
                 "frequency": "twice daily",
                 "category": "Prescription",
