@@ -14,10 +14,10 @@ Patient structure:
     "age": Number,
     "sex": String, # "male" or "female"
     "doctor": String, # name of the doctor
-    "nodes": [ # List of prescribed drugs
+    "nodes": [ # List of BOTH prescribed drugs and foods or other substances.
         {
             "drug_name": String, # Example drug entry
-            "din": Int, # Drug Identification Number
+            "din": String, # Drug Identification Number
             "dosage": String,
             "frequency": String,
             "category": String,
@@ -26,10 +26,13 @@ Patient structure:
             "end_date": String, # format: "YYYY-MM-DD"
             "notes": String
         }, 
+        {
+            "name": String, # Alcohol, a food, or maybe even recreational drugs may cause harmful interactions.
+        },
         ...
     ],
     "edges": [ # list of drug interactions
-        {
+        { # Example edge between a drug and another drug
             "din1": String, # Drug Identification Number of the first drug
             "din2": String, # Drug Identification Number of the second drug
             "drug_name1": String, # Name of the first drug
@@ -42,6 +45,17 @@ Patient structure:
                 "https://example.com/research2"
             ]
         },
+        { # Example edge between a drug and a food
+            "din1": # Name of drug
+            "name": # Name of the FOOD or OTHER substance.
+            "interaction_type":
+            "severity":
+            "advanced_info": String, # Additional information description about the interaction
+            "research_links": [ # List of links to research papers or articles about the interaction
+                "https://example.com/research1",
+                "https://example.com/research2"
+            ]
+        }
         ...
     ],
     "medical_history": [

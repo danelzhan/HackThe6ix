@@ -6,92 +6,13 @@ import gemini
 import json
 from flasgger import Swagger
 import logging
+import random_assets
 
 logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
-
+Swagger(app, config=random_assets.swagger_config, template=random_assets.swagger_template)
 # Swagger configuration
-swagger_config = {
-    "headers": [],
-    "specs": [
-        {
-            "endpoint": 'apispec',
-            "route": '/apispec.json',
-            "rule_filter": lambda rule: True,  # all in
-            "model_filter": lambda tag: True,  # all in
-        }
-    ],
-    "static_url_path": "/flasgger_static",
-    "swagger_ui": True,
-    "specs_route": "/apidocs/"
-}
-
-swagger_template = {
-    "swagger": "2.0",
-    "info": {
-        "title": "HackThe6ix Medical API",
-        "description": "A medical patient management and drug interaction analysis API",
-        "contact": {
-            "responsibleOrganization": "HackThe6ix Team",
-            "responsibleDeveloper": "Medical Team",
-            "email": "team@hackthe6ix.com",
-            "url": "https://hackthe6ix.com",
-        },
-        "termsOfService": "http://hackthe6ix.com/terms",
-        "version": "1.0"
-    },
-    "host": "localhost:5000",  # overrides localhost:500
-    "basePath": "/",  # base bash for blueprint registration
-    "schemes": [
-        "http",
-        "https"
-    ],
-    "operationId": "getmyData"
-}
-
-Swagger(app, config=swagger_config, template=swagger_template)
-
-# Sample data for demonstration
-sample_patients = [
-    {
-        "_id": "john.doe@email.com",
-        "name": "John Doe",
-        "age": 30,
-        "sex": "male",
-        "doctor": "Dr. Smith",
-        "nodes": [
-            {
-                "drug_name": "Metformin",
-                "din": 123456789,
-                "dosage": "500mg",
-                "frequency": "twice daily",
-                "category": "Prescription",
-                "time_taken": "08:00",
-                "start_date": "2024-01-15",
-                "end_date": "2024-12-15",
-                "notes": "Take with food"
-            }
-        ],
-        "edges": [],
-        "medical_history": [
-            {
-                "condition": "Type 2 Diabetes",
-                "diagnosis_date": "2023-06-01",
-                "treatment": "Medication and diet control",
-                "notes": "Well controlled"
-            }
-        ],
-        "allergies": [
-            {
-                "allergen": "Penicillin",
-                "reaction": "Rash",
-                "severity": "moderate",
-                "notes": "Avoid all penicillin-based antibiotics"
-            }
-        ]
-    }
-]
 
 @app.route('/', methods=['GET'])
 def home():
@@ -387,7 +308,25 @@ def add_patient_node(patient_id):
                 "error": "Patient not found"
             }), 404
         logging.info(f"Current patient data: {patient_data}")
-        # Get interactions of the new node with existing drugs
+
+
+        # Get interactions of the new node with existing drugs and foods
+        foods = gemini.get_food_interactions(
+            drug_name1=node['drug_name'],
+            din1=node['din'],
+            patient_data=patient_data
+        )
+        current_foods = []
+        for _node in patient_data['nodes']:
+            if 'din' in _node:
+                continue
+            current_foods.append(_node.get('name'))
+
+        for food in foods:
+            if(food['name'] not in current_foods):
+                database.edit_patient(patient_id, {"$push": {"nodes": {"name": food['name']}}})
+            database.edit_patient(patient_id, {"$push": {"edges": food}})
+
         interactions = gemini.get_all_interactions(node, patient_data)
         logging.info(f"Found {len(interactions)} interactions for new node")
         # Update interactions using proper MongoDB operations
@@ -583,8 +522,8 @@ def remove_patient_node(patient_id):
         # Get JSON data of node item
         data = request.get_json()
         din = data.get('din')  # Assuming node is identified by its DIN
-        logging.info(f"Removing node: {node} from patient: {patient_id} and removing related interactions")
-        if not patient_id or not node:
+        logging.info(f"Removing node: {din} from patient: {patient_id} and removing related interactions")
+        if not patient_id or not din:
             return jsonify({
                 "success": False,
                 "error": "Missing patient_id or node data"
@@ -620,7 +559,6 @@ def remove_patient_node(patient_id):
             "success": False,
             "error": str(e)
         }), 500
-
 
 
 if __name__ == '__main__':
