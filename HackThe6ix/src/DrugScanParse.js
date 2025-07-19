@@ -67,11 +67,4 @@ export async function main() {
         return data;
     }
 
-    async function testFetchBackend() {
-        console.log("started test")
-        fetch('http://localhost:5000/patients')
-            .then(response => response.json())
-            .then(data => console.log(data));
-    }
-
 }

@@ -147,7 +147,7 @@ const DrugInteractionGraph = ({ medications }) => {
   }, [medications]);
 
   return (
-    <div style={{ height: '500px', border: '1px solid #eee', borderRadius: '8px', position: 'relative' }}>
+    <div id="graph_container">
       <div ref={containerRef} style={{ height: '100%', width: '100%' }} />
       
       {/* Tooltip */}
@@ -172,9 +172,8 @@ const DrugInteractionGraph = ({ medications }) => {
 
       {/* Legend */}
       <div style={{
-        position: 'absolute',
-        bottom: '20px',
-        left: '20px',
+        position: 'fixed',
+        bottom: '10rem',
         backgroundColor: 'white',
         padding: '10px',
         borderRadius: '5px',

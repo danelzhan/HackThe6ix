@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import DrugInteractionGraph from './Components/DrugInteractionGraph';
-import { Camera } from "./Camera.jsx";
-import LoginButton from "./Components/LoginButton.jsx";
-import LogoutButton from './Components/LogoutButton.jsx';
 import { useAuth0 } from '@auth0/auth0-react';
 import { postUser, fetchUserByEmail } from './Bridge.js';
+import { Routes, Route, Link } from 'react-router-dom';
+import { HomePage } from "./Pages/HomePage.jsx"
+import { JournalPage } from './Pages/JournalPage.jsx';
+import { InteractionsPage } from './Pages/InteractionsPage.jsx';
+import { ProfilePage } from './Pages/ProfilePage.jsx';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import ScatterPlotOutlinedIcon from '@mui/icons-material/ScatterPlotOutlined';
+import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 
 function App() {
   var [userObj, setUserObj] = useState(null); // Add this line
@@ -63,12 +68,44 @@ function App() {
 
   return (
     <div className="app">
-      <LoginButton />
-      <LogoutButton />
-      <h1>Medication Interaction Visualizer</h1>
-      <DrugInteractionGraph medications={medications} />
-      <Camera />
-      {userObj && <div>User: {userObj.name}</div>}
+      {/* Routing */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/journal" element={<JournalPage />} />
+        <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
+        <Route path="/profile" element={<ProfilePage user={userObj} />} />
+      </Routes>
+      
+      {/* Navigation Links */}
+      <div id="nav_bar_container">
+        <nav id="nav_bar">
+          <Link to="/">
+            <div className="nav_bar_link_container">
+              <HomeOutlinedIcon />
+              <p>Home</p>
+            </div>
+          </Link>
+          <Link to="/journal">
+            <div className="nav_bar_link_container">
+              <BookOutlinedIcon />
+              <p>Journal</p>
+            </div>
+          </Link>
+          <Link to="/interactions">
+            <div className="nav_bar_link_container">
+              <ScatterPlotOutlinedIcon />
+              <p>Interactions</p>
+            </div>
+            </Link>
+          <Link to="/profile">
+            <div className="nav_bar_link_container">
+              <Person2OutlinedIcon />
+              <p>Profile</p>
+            </div>
+          </Link>
+      </nav>
+      </div>
+
     </div>
   );
 }

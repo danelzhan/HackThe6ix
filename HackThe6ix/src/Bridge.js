@@ -28,3 +28,15 @@ export async function fetchUserByEmail(email) {
     console.log(new Patient(data.data))
     return new Patient(data.data);
 }
+
+export async function postNode(node, patient_ID) {
+    fetch(`http://localhost:5000/patients/add_node/${patient_ID}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+    },
+        body: JSON.stringify(node),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data));
+}

@@ -1,0 +1,48 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.app {
+    width: 25rem;
+    border: 1px solid black;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#graph_container{
+    height: 80vh;
+}
+
+#nav_bar_container {
+    position: fixed;
+    bottom: 0;
+    width: 25rem;
+    height: 8vh;
+    z-index: 999;
+    background-color: #EDEDED;  
+}
+
+#nav_bar {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav_bar_link_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #525252;
+}
+
+.nav_bar_link_container p {
+    text-decoration: none;
+
+}
