@@ -77,6 +77,15 @@ client = MongoClient(uri, server_api=ServerApi('1'))
 #     ]
 # }
 
+def has_edge_with_name(patient_id, name):
+    db = client['hackthe6ix']  # database name
+    patients_collection = db['patients']  # collection name
+    doc = patients_collection.find_one(
+        {"_id": patient_id, "edges.name": name},
+        {"_id": 1}  # projection can be minimal, since we only care if it exists
+    )
+    return doc is not None
+
 
 def add_patient(patient_data):
     """

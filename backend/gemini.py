@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 import random_assets
 import json
 
+
+# set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and add research links that show evidence that these two drugs are safe.
+
 # Load environment variables
 load_dotenv()
 
@@ -103,6 +106,9 @@ def get_all_interactions(drug_object, patient_data):
         if 'error' in interaction:
             print(f"Error fetching interaction for {drug_object['drug_name']} and {node['drug_name']}: {interaction['error']}")
             continue # skip this interaction if there's an error
+        if 'none' in interaction :
+            print(f"No significant interaction found between {drug_object['drug_name']} and {node['drug_name']}")
+            continue  # skip this interaction if there's no significant interaction
         interactions.append(interaction)
     return interactions
 
@@ -141,7 +147,7 @@ Return your answer **strictly as a single JSON object** with these fields:
     ]
 }}
 
-If no interaction is found, set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and add research links that show evidence that these two drugs are safe.
+If no interaction is found, or if they are safe to take together, return this JSON object: {{"none": "No interaction found"}}
 If two drugs are commonly co-prescribed, DO NOT overstate the severity. If there may be cause for concern, label it as "mild" or "moderate" at most.
 If you cannot find enough information such that you deem your search inconclusive, or encounter any other error such that you cannot complete this request, return this EXACT JSON object: {{"error": "Inconclusive search"}}
 
