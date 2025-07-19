@@ -19,6 +19,7 @@ export function ProfilePage(user) {
         <div className="app">
             {user.name}
             <LogoutButton />
+            
 
         </div>
     );
