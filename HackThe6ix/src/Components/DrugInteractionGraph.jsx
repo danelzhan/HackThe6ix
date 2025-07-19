@@ -4,6 +4,7 @@ import { DataSet } from 'vis-data';
 import 'vis-network/styles/vis-network.css';
 import { FaPills, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 
+
 const DrugInteractionGraph = ({ medications }) => {
   const networkRef = useRef(null);
   const containerRef = useRef(null);
@@ -13,6 +14,8 @@ const DrugInteractionGraph = ({ medications }) => {
     x: 0, 
     y: 0 
   });
+
+  
 
   const generateDrugDetails = (med) => {
     let details = `Name: ${med.name}`;
@@ -29,7 +32,8 @@ const DrugInteractionGraph = ({ medications }) => {
       medications.map((med, index) => ({
         id: index,
         label: med.name,
-        color: getDrugColor(med),
+        color: '#e0e0e0',
+        //opacity: 0.7,
         shape: 'box',
         margin: 10,
         font: { size: 14 },
@@ -42,10 +46,11 @@ const DrugInteractionGraph = ({ medications }) => {
         from: interaction.from,
         to: interaction.to,
         label: interaction.type,
-        color: getInteractionColor(interaction.type),
+        //color: getInteractionColor(interaction.type),
+        color: '#b0b0b0',
         width: 2,
         dashes: interaction.type === 'Caution',
-        length: 300
+        length: 300,
       }))
     );
 
@@ -68,16 +73,39 @@ const DrugInteractionGraph = ({ medications }) => {
       },
       interaction: {
         dragNodes: true,
-        hover: false, // Disable hover if using click
+        hover: false,
       },
     };
 
     networkRef.current = new Network(containerRef.current, data, options);
 
-    const handleClick = (params) => {
+   const handleClick = (params) => {
       if (params.nodes.length) {
         const nodeId = params.nodes[0];
         const node = nodes.get(nodeId);
+
+        // Update node's color
+        nodes.update({
+          id: nodeId,
+          color: {
+            background:  getDrugColor(nodes.get(nodeId).medication), 
+            border: getDrugColor(nodes.get(nodeId).medication),
+            highlight: {
+              background:  getDrugColor(nodes.get(nodeId).medication),
+              border: getDrugColor(nodes.get(nodeId).medication)
+            }
+          },
+          font: { color: '#000' }
+        });
+
+        // Highlight connected edges
+        const connectedEdges = networkRef.current.getConnectedEdges(nodeId);
+        edges.update(connectedEdges.map(edgeId => ({
+          id: edgeId,
+          color: getInteractionColor(edges.get(edgeId).label),
+          width: 2
+        })));
+
         if (node?.medication) {
           setTooltip({
             visible: true,
@@ -87,6 +115,26 @@ const DrugInteractionGraph = ({ medications }) => {
           });
         }
       } else {
+        // Reset all nodes and edges when clicking empty space
+        nodes.update(nodes.get().map(node => ({
+          id: node.id,
+          color: {
+            background: '#e0e0e0',
+            border: '#b0b0b0',
+            highlight: {
+              background: getDrugColor(node.medication),
+              border: getDrugColor(node.medication)
+            }
+          },
+          font: { color: '#333' }
+        })));
+
+        edges.update(edges.get().map(edge => ({
+          id: edge.id,
+          color: '#b0b0b0',
+          width: 1
+        })));
+
         setTooltip({ ...tooltip, visible: false });
       }
     };
