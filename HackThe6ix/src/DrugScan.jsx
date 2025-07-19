@@ -6,7 +6,6 @@ import { Camera } from './Camera.jsx'
 export function DrugScan() {
   
     return <>
-        <p onClick={main}>Click</p>
         <Camera />
     </>
 
