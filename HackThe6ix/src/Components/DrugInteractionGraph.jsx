@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import 'vis-network/styles/vis-network.css';
@@ -7,24 +7,36 @@ import { FaPills, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 const DrugInteractionGraph = ({ medications }) => {
   const networkRef = useRef(null);
   const containerRef = useRef(null);
+  const [tooltip, setTooltip] = useState({ 
+    visible: false, 
+    content: '', 
+    x: 0, 
+    y: 0 
+  });
+
+  const generateDrugDetails = (med) => {
+    let details = `Name: ${med.name}`;
+    if (med.dosage) details += `\nDosage: ${med.dosage}`;
+    if (med.frequency) details += `\nFrequency: ${med.frequency}`;
+    if (med.notes) details += `\nNotes: ${med.notes}`;
+    return details;
+  };
 
   useEffect(() => {
     if (!medications.length) return;
 
-    // Transform medication data into nodes and edges
     const nodes = new DataSet(
       medications.map((med, index) => ({
         id: index,
         label: med.name,
-        title: generateDrugTooltip(med),
         color: getDrugColor(med),
         shape: 'box',
         margin: 10,
         font: { size: 14 },
+        medication: med, // Store full medication data
       }))
     );
 
-    // Generate sample interactions !!!!!!!!!!!!!! (replace with actual data)
     const edges = new DataSet(
       generateInteractions(medications).map(interaction => ({
         from: interaction.from,
@@ -56,31 +68,61 @@ const DrugInteractionGraph = ({ medications }) => {
       },
       interaction: {
         dragNodes: true,
-        hover: true,
+        hover: false, // Disable hover if using click
       },
     };
 
     networkRef.current = new Network(containerRef.current, data, options);
 
+    const handleClick = (params) => {
+      if (params.nodes.length) {
+        const nodeId = params.nodes[0];
+        const node = nodes.get(nodeId);
+        if (node?.medication) {
+          setTooltip({
+            visible: true,
+            content: generateDrugDetails(node.medication),
+            x: params.pointer.DOM.x,
+            y: params.pointer.DOM.y
+          });
+        }
+      } else {
+        setTooltip({ ...tooltip, visible: false });
+      }
+    };
+
+    networkRef.current.on('click', handleClick);
 
     return () => {
-
+      networkRef.current?.off('click', handleClick);
     };
   }, [medications]);
 
-  const generateDrugTooltip = (med) => {
-    let tooltip = ``;
-    if (med.dosage) tooltip += `Dosage: ${med.dosage}`;
-    if (med.frequency) tooltip += `\nFrequency: ${med.frequency}`;
-    if (med.notes) tooltip += `\nNotes: ${med.notes}`;
-    return tooltip;
-  };
-
-
   return (
-    <div style={{ height: '500px', border: '1px solid #eee', borderRadius: '8px' }}>
+    <div style={{ height: '500px', border: '1px solid #eee', borderRadius: '8px', position: 'relative' }}>
       <div ref={containerRef} style={{ height: '100%', width: '100%' }} />
       
+      {/* Tooltip */}
+      {tooltip.visible && (
+        <div style={{
+          position: 'absolute',
+          left: tooltip.x,
+          top: tooltip.y,
+          backgroundColor: 'white',
+          padding: '10px',
+          border: '1px solid #ddd',
+          borderRadius: '4px',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+          zIndex: 100,
+          maxWidth: '300px'
+        }}>
+          {tooltip.content.split('\n').map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
+        </div>
+      )}
+
+      {/* Legend */}
       <div style={{
         position: 'absolute',
         bottom: '20px',
@@ -88,7 +130,8 @@ const DrugInteractionGraph = ({ medications }) => {
         backgroundColor: 'white',
         padding: '10px',
         borderRadius: '5px',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+        boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+        zIndex: 50
       }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
           <FaExclamationTriangle color="red" style={{ marginRight: '5px' }} />
@@ -106,10 +149,10 @@ const DrugInteractionGraph = ({ medications }) => {
     </div>
   );
 };
-
+ 
 // Helper functions
 const getDrugColor = (med) => {
-  // Customize based on your drug properties
+  // Customize based on drug properties
   return med.category === 'prescription' ? '#D2E5FF' : '#FFE8D2';
 };
 
