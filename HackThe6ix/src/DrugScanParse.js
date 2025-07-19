@@ -20,6 +20,9 @@ const ai = new GoogleGenAI({
 });
 
 export async function main() {
+
+    testFetchBackend()
+    
     console.log("Image Sent");
     const capturedImage = localStorage.getItem("capturedImage").replace(/^data:image\/png;base64,/, "");
     const response = await ai.models.generateContent({
@@ -77,4 +80,12 @@ export async function main() {
         const data = await res.json();
         return data;
     }
+
+    async function testFetchBackend() {
+        console.log("started test")
+        fetch('http://localhost:5000/patients')
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+
 }

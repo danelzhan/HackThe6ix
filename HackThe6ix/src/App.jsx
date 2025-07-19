@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import DrugInteractionGraph from './Components/DrugInteractionGraph';
+import {Camera} from "./Camera.jsx"
+import LoginButton from "./Components/LoginButton.jsx"
+import logoutButton from "./Components/LogoutButton.jsx"
+import LogoutButton from './Components/LogoutButton.jsx';
+import { useAuth0 } from '@auth0/auth0-react';
+import { postUser, fetchUserByEmail } from './Bridge.js';
 
 function App() {
   const [medications, setMedications] = useState([
@@ -16,7 +22,6 @@ function App() {
       frequency: 'Once daily',
       category: 'prescription'
     },
-    // Add more 
     {
       name: 'Metaformin',
       dosage: '10mg',
@@ -43,10 +48,22 @@ function App() {
     },
   ]);
 
+  const { isAuthenticated, user } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      console.log("User email:", user.email);
+      fetchUserByEmail(user.email);
+    }
+  }, [isAuthenticated, user]);
+
   return (
     <div className="app">
+      <LoginButton />
+      <LogoutButton />
       <h1>Medication Interaction Visualizer</h1>
       <DrugInteractionGraph medications={medications} />
+      <Camera />
     </div>
   );
 }
