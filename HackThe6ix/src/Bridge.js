@@ -1,7 +1,9 @@
 import { Patient } from './Objects.js';
 
+const BRIDGE_URL = import.meta.env.VITE_BRIDGE_URL || 'http://localhost:5000';
+
 export async function postUser() {
-    fetch('http://localhost:5000/patients', {
+    fetch(`${BRIDGE_URL}/patients`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -23,14 +25,14 @@ export async function postUser() {
 }
 
 export async function fetchUserByEmail(email) {
-    const response = await fetch(`http://localhost:5000/patients/${encodeURIComponent(email)}`);
+    const response = await fetch(`${BRIDGE_URL}/patients/${encodeURIComponent(email)}`);
     const data = await response.json();
     console.log(new Patient(data.data))
     return new Patient(data.data);
 }
 
 export async function postNode(node, patient_ID) {
-    fetch(`http://localhost:5000/patients/add_node/${patient_ID}`, {
+    fetch(`${BRIDGE_URL}/patients/add_node/${patient_ID}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,12 +1,25 @@
 import React from 'react';
 
-export function ProfileHeader(user) {
+export function ProfileHeader({name}) {
 
-    const name = user.user.name;
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-GB');
+    const hour = Number(timeString.split(':')[0]);
 
-  return (
-    <div className="app">
-        Journal
+    var greeting = "Hello";
+
+    if (hour >= 3 && hour < 12) {
+        greeting = "Good morning";
+    } else if (hour >= 12 && hour < 17) {
+        greeting = "Good afternoon";
+    } else {
+        greeting = "Good evening";
+    }
+  
+    return <div id="profile_header">
+
+        <p className="greeting">{greeting}, {name}</p>
+
     </div>
-  );
+
 }
