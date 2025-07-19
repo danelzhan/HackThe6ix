@@ -12,7 +12,7 @@ const EditButton = ({ editMode, onToggle }) => {
             <> Save
             </>
         ) : (
-            <>Edit
+            <>Edit Schedule
             </>
         )}
         </button>

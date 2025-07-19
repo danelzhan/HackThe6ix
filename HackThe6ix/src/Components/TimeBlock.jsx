@@ -17,7 +17,7 @@ const TimeBlock = ({ time, medications, editMode, onMedicationToggle }) => {
               <>
                 <button 
                   className="check-button" 
-                  // NEEDS CHANGING LATER W BACKEND
+                  // NEEDS CHANGING LATER W BACKEND !!!
                   onClick={() => onMedicationToggle(med.name)}
                 >
                   {med.taken ? <FiCheck /> : <FiCircle />}
@@ -28,7 +28,7 @@ const TimeBlock = ({ time, medications, editMode, onMedicationToggle }) => {
               <>
                 <button 
                   className="delete-button" 
-                  // NEEDS CHANGING LATER W BACKEND
+                  // NEEDS CHANGING LATER W BACKEND !!!
                   onClick={() => console.log('Delete', med)}
                 >
                   <FiX />
