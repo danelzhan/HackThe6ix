@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DrugInteractionGraph from './Components/DrugInteractionGraph';
+import MedicationJournal from './Components/MedicationJournal';
 
 function App() {
   const [medications, setMedications] = useState([
@@ -16,7 +17,6 @@ function App() {
       frequency: 'Once daily',
       category: 'prescription'
     },
-    // Add more 
     {
       name: 'Metaformin',
       dosage: '10mg',
@@ -43,10 +43,14 @@ function App() {
     },
   ]);
 
+
+
   return (
     <div className="app">
-      <h1>Medication Interaction Visualizer</h1>
-      <DrugInteractionGraph medications={medications} />
+      {/* <h1>Medication Interaction Visualizer</h1>
+      <DrugInteractionGraph medications={medications} /> */}
+      <MedicationJournal />
+      
     </div>
   );
 }
