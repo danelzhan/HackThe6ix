@@ -1,12 +1,27 @@
 import { GoogleGenAI } from "@google/genai";
 
+class Drug {
+    constructor(name, ingredient, din, form, dosage, frequency, category, start_date, end_date, notes) {
+        this.drug_name = name;
+        this.drug_ingredient = ingredient;
+        this.din = din;
+        this.form = form;
+        this.dosage = dosage;
+        this.frequency = frequency;
+        this.category = category;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.notes = notes;
+    }
+}
+
 const ai = new GoogleGenAI({
     apiKey: import.meta.env.VITE_GEMINI_API_KEY,
 });
 
 export async function main() {
-    console.log("Image Sent")
-    const capturedImage = localStorage.getItem("capturedImage").replace(/^data:image\/png;base64,/, "");;
+    console.log("Image Sent");
+    const capturedImage = localStorage.getItem("capturedImage").replace(/^data:image\/png;base64,/, "");
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: [
@@ -16,8 +31,50 @@ export async function main() {
                     data: capturedImage,
                 },
             },
-            { text: "The image should be a picture of a medication. From the image, if possible, find the following information and list it in json format: 'drug name', 'din', 'dosage'. If you cannot identify any of the information, return the error message: 'Error: Medication not recognized', if only some information cannot be recognized, you can make the unrecognized information the empty string" },
+            { text: "The image should be a picture of a medication. From the image, if possible, return only the din number with no formatting, only the number" },
         ]
     });
     console.log(response.text);
+
+    const din = response.text;
+    const drugProductData = await fetchDrugProduct(din);
+    const id = drugProductData[0]?.drug_code;
+    const drugFormData = await fetchDrugForm(id);
+    const drugIngredientData = await fetchDrugIngredient(id);
+
+    const drug = new Drug(
+        drugProductData[0]?.brand_name || "",
+        drugIngredientData[0]?.ingredient_name || "",
+        Number(drugProductData[0]?.drug_identification_number) || "",
+        drugFormData[0]?.pharmaceutical_form_name || "",
+        "", // dosage
+        "", // frequency
+        "", // category
+        "", // start_date
+        "", // end_date
+        ""  // notes
+    );
+
+    return drug;
+
+    async function fetchDrugProduct(din) {
+        const url = `https://health-products.canada.ca/api/drug/drugproduct/?din=${din}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+    }
+
+    async function fetchDrugForm(id) {
+        const url = `https://health-products.canada.ca/api/drug/form/?id=${id}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+    }
+
+    async function fetchDrugIngredient(id) {
+        const url = `https://health-products.canada.ca/api/drug/activeingredient/?id=${id}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        return data;
+    }
 }
