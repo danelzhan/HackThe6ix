@@ -17,24 +17,28 @@ genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
 
 
-def parse_new_user(patient_data):
+def get_all_interactions(drug_object, patient_data):
     """
-    Parse new patient data, 
-    
-    Args:
-        patient_data (dict): Raw patient data from request (id, name, age, sex, doctor SHOULD BE FILLED OUT)
-        
-    Returns:
-        dict: Parsed patient data with required fields
+    Returns a list of all drug interactions between the patient's drugs and the given drug object as edges.
     """
-    parsed_data = {
-        "_id": patient_data.get('_id'),
-        "name": patient_data.get('name'),
-        "age": patient_data.get('age'),
-    }
+    interactions = []
+    for node in patient_data['nodes']:
+        if node['din'] == drug_object['din']:
+            continue  # Skip the drug itself
+        print(f"Checking interaction between {drug_object['drug_name']} and {node['drug_name']}")
+        interaction = get_drug_interactions(
+            drug_name1=drug_object['drug_name'],
+            drug_name2=node['drug_name'],
+            din1=drug_object['din'],
+            din2=node['din']
+        )
+        if 'error' in interaction:
+            print(f"Error fetching interaction for {drug_object['drug_name']} and {node['drug_name']}: {interaction['error']}")
+            continue # skip this interaction if there's an error
+        interactions.append(interaction)
+    return interactions
 
-
-def get_drug_interactions(drug_name1, drug_name2):
+def get_drug_interactions(drug_name1, drug_name2, din1, din2):
     """
     Consults Gemini to get drug interactions between two DINS.
     Returns a dict in the format:
@@ -52,7 +56,7 @@ def get_drug_interactions(drug_name1, drug_name2):
     prompt = f"""
 You are a pharmaceutical expert AI assistant.
 
-Given two drugs with Drug Names: {drug_name1} and {drug_name2}, please find and summarize any drug interactions between them.
+Given two drugs with Drug Names: {drug_name1} and {drug_name2}, and Canadian DIN numbers {din1} and {din2}, please find and summarize any drug interactions between them.
 
 Return your answer **strictly as a single JSON object** with these fields:
 {{
@@ -60,16 +64,17 @@ Return your answer **strictly as a single JSON object** with these fields:
     "din2": String,  # Canadian Drug Identification Number of the second drug
     "drug_name1": String,  # Name of the first drug
     "drug_name2": String,  # Name of the second drug
-    "interaction_type": String,  # Type of interaction (e.g., "antagonistic", "synergistic")
-    "severity": String,  # Severity ("mild", "moderate", or "severe")
+    "interaction_type": String,  # Type of interaction (Example: Delayed absorption, Increased side effects, prolongation or bleeding)
+    "severity": String,  # Severity ("none", "mild", "moderate", "major", or "contraindicated")
     "advanced_info": String,  # Concise, layperson-friendly, FACTUAL summary of the interaction. MAKE THIS AS CONCISE AND EASY TO UNDERSTAND AS POSSIBLE. EXPLAIN THE INTERACTION IN SIMPLE TERMS.
-    "research_links": [      # List of real, publicly accessible research papers or authoritative sources supporting this interaction
+    "research_links": [      # List of real, publicly accessible research papers or authoritative sources supporting either the interaction or the safety of these drugs together
         "https://example.com/research1",
         "https://example.com/research2"
     ]
 }}
 
-If no interaction is found, set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and leave "research_links" as an empty list.
+If no interaction is found, set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and add research links that show evidence that these two drugs are safe.
+If two drugs are commonly co-prescribed, DO NOT overstate the severity. If there may be cause for concern, label it as "mild" or "moderate" at most, and provide a clear explanation.
 If you cannot find enough information such that you deem your search inconclusive, or encounter any other error such that you cannot complete this request, return this EXACT JSON object: {{"error": "Inconclusive search"}}
 
 Strictly output only the JSON. Do not add any explanation or text outside the JSON object.
@@ -135,8 +140,12 @@ if __name__ == "__main__":
     if test_gemini_connection():
         print("Gemini API connection successful!")
         print("this pair should be bad for u:")
-        print(get_drug_interactions("Ibuprofen","Warfarin"))
+        print(get_drug_interactions("Ibuprofen","Warfarin", "02443562", "02242924"))
         print("this pair should be good for u:")
-        print(get_drug_interactions("TYLENOL 325MG TABLET", "CLARITIN 10MG TABLET"))
+        print(get_drug_interactions("TYLENOL 325MG TABLET", "CLARITIN 10MG TABLET", "02046040", "00782696"))
+
+        # test getting interactions of two of the same drug
+        print("this pair should be inconclusive:")
+        print(get_drug_interactions("Ibuprofen", "Ibuprofen", "02443562", "02443562"))
     else:
         print("Failed to connect to Gemini API. Check your API key in .env file.")

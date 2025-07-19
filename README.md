@@ -34,7 +34,7 @@ Patient structure:
             "din2": String, # Drug Identification Number of the second drug
             "drug_name1": String, # Name of the first drug
             "drug_name2": String, # Name of the second drug
-            "interaction_type": String, # Type of interaction (e.g., "antagonistic", "synergistic")
+            "interaction_type": String, # Type of interaction (Example: Delayed absorption, Increased side effects, prolongation or bleeding)
             "severity": String, # Severity of the interaction ("mild", "moderate", "severe")
             "advanced_info": String, # Additional information description about the interaction
             "research_links": [ # List of links to research papers or articles about the interaction
@@ -63,3 +63,27 @@ Patient structure:
         ...
     ]
 }
+
+# Some valid test nodes:
+{
+                "drug_name": "Metformin",
+                "din": "02242974",
+                "dosage": "500mg",
+                "frequency": "twice daily",
+                "category": "Prescription",
+                "time_taken": "08:00",
+                "start_date": "2024-01-15",
+                "end_date": "2024-12-15",
+                "notes": "Take with food"
+            }
+{
+                "drug_name": "Aspirin",
+                "din": "02237726",
+                "dosage": "81",
+                "frequency": "once daily",
+                "category": "Prescription",
+                "time_taken": "08:00",
+                "start_date": "2024-01-15",
+                "end_date": "2024-12-15",
+                "notes": "Take with food"
+            }
