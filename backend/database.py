@@ -38,8 +38,10 @@ client = MongoClient(uri, server_api=ServerApi('1'))
 #     ],
 #     "edges": [ # list of drug interactions
 #         {
-#             "din1": Int, # Drug Identification Number of the first drug
-#             "din2": Int, # Drug Identification Number of the second drug
+#             "din1": String, # Drug Identification Number of the first drug
+#             "din2": String, # Drug Identification Number of the second drug
+#             "drug_name1": String, # Name of the first drug
+#             "drug_name2": String, # Name of the second drug
 #             "interaction_type": String, # Type of interaction (e.g., "antagonistic", "synergistic")
 #             "severity": String, # Severity of the interaction ("mild", "moderate", "severe")
 #             "advanced_info": String, # Additional information description about the interaction
@@ -77,11 +79,11 @@ def add_patient(patient_data):
     result = patients_collection.insert_one(patient_data)
     return str(result.inserted_id)
 
-def edit_patient(patient_id, updated_data):
+def edit_patient(patient_email, updated_data):
     db = client['hackthe6ix']
     patients_collection = db['patients']
     result = patients_collection.update_one(
-        {"_id": ObjectId(patient_id)},
+        {"_id": patient_email}, #? this might need to be changed to ObjectId if using IDs
         {"$set": updated_data}
     )
     return result.modified_count

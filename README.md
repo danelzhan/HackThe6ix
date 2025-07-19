@@ -30,8 +30,10 @@ Patient structure:
     ],
     "edges": [ # list of drug interactions
         {
-            "din1": Int, # Drug Identification Number of the first drug
-            "din2": Int, # Drug Identification Number of the second drug
+            "din1": String, # Drug Identification Number of the first drug
+            "din2": String, # Drug Identification Number of the second drug
+            "drug_name1": String, # Name of the first drug
+            "drug_name2": String, # Name of the second drug
             "interaction_type": String, # Type of interaction (e.g., "antagonistic", "synergistic")
             "severity": String, # Severity of the interaction ("mild", "moderate", "severe")
             "advanced_info": String, # Additional information description about the interaction
