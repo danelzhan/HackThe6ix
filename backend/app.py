@@ -299,23 +299,31 @@ def add_patient_node(patient_id):
                 "success": False,
                 "error": "Missing patient_id or node data"
             }), 400
-        
+        print("1")
         # Get current patient data
         patient_data = database.get_patient_by_id(patient_id)
+        print("2")
         if not patient_data:
             return jsonify({
                 "success": False,
                 "error": "Patient not found"
             }), 404
         logging.info(f"Current patient data: {patient_data}")
-
-
+        # Check if node already exists
+        for existing_node in patient_data['nodes']:
+            if 'din' in existing_node and existing_node['din'] == node['din']:
+                return jsonify({
+                    "success": False,
+                    "message": "Node already exists for this patient"
+                }), 400
+        print("3")
         # Get interactions of the new node with existing drugs and foods
         foods = gemini.get_food_interactions(
             drug_name1=node['drug_name'],
             din1=node['din'],
             patient_data=patient_data
         )
+        print("4")
         current_foods = []
         for _node in patient_data['nodes']:
             if 'din' in _node:
@@ -599,7 +607,7 @@ def remove_patient_node(patient_id):
             }), 400
         
         edges_modified = database.edit_patient(patient_id, {"$pull": {"edges": {"din1": din}}}) # 2 cases: din1 or din2
-        edges_modified = database.edit_patient(patient_id, {"$pull": {"edges": {"din2": din}}})
+        edges_modified += database.edit_patient(patient_id, {"$pull": {"edges": {"din2": din}}})
 
         nodes_modified = database.edit_patient(patient_id, {"$pull": {"nodes": {"din": din}}}) # should always only be either 0 or 1...
         # remove nodes that dont have edges
@@ -609,6 +617,7 @@ def remove_patient_node(patient_id):
             if(database.has_edge_with_name(patient_id, node['name'])):
                 continue
             database.edit_patient(patient_id, {"$pull": {"nodes": {"name": node['name']}}})
+            print(f"Removed node {node['name']} as it had no edges")
 
         if edges_modified > 0 and nodes_modified == 0:
             return jsonify({
