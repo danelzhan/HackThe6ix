@@ -4,42 +4,18 @@ const ai = new GoogleGenAI({
     apiKey: import.meta.env.VITE_GEMINI_API_KEY,
 });
 
-// Convert Base64 string to Blob
-function base64ToBlob(base64, mime = "image/png") {
-    const byteString = atob(base64.split(",")[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mime });
-}
-
-async function blobToUint8Array(blob) {
-    const arrayBuffer = await blob.arrayBuffer();
-    return new Uint8Array(arrayBuffer);
-}
-
-export async function main(image) {
-    console.log("clicked");
-    // If image is a base64 string, convert to Blob first
-    let blob;
-    if (typeof image === "string") {
-        blob = base64ToBlob(image);
-    } else {
-        blob = image;
-    }
-    const imageBytes = await blobToUint8Array(blob);
+export async function main() {
+    const capturedImage = localStorage.getItem("capturedImage").replace(/^data:image\/png;base64,/, "");;
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: [
             {
-                role: "user",
-                parts: [
-                    { text: "Describe this image." },
-                    { inline_data: { mime_type: "image/png", data: imageBytes } }
-                ]
-            }
+                inlineData: {
+                mimeType: "image/jpeg",
+                data: capturedImage,
+                },
+            },
+            { text: "The image should be a picture of a medication. From the image, if possible, find the following information and list it in json format: 'name', 'dosage', 'DIN'. If you cannot identify any of the information, return the error message: 'Error: Medication not recognized'" },
         ]
     });
     console.log(response.text);
