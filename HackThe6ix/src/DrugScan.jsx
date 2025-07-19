@@ -4,11 +4,10 @@ import { main } from './DrugScanParse.js'
 import { Camera } from './Camera.jsx'
 
 export function DrugScan() {
-    const [image, setImage] = useState("");
   
     return <>
-        <p onClick={() => main(image)}>Click</p>
-        <Camera setImage = {setImage} />
+        <p onClick={main}>Click</p>
+        <Camera />
     </>
 
 }
