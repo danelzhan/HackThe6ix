@@ -68,7 +68,7 @@ def create_patient():
         patient_data = request.get_json()
         
         # Validate required fields
-        required_fields = ['name', 'age', 'sex', 'doctor']
+        required_fields = ['_id', 'name', 'age', 'sex', 'doctor', 'nodes', 'edges', 'medical_history', 'allergies']
         for field in required_fields:
             if field not in patient_data:
                 return jsonify({
@@ -77,7 +77,7 @@ def create_patient():
                 }), 400
         
         # Add patient to database
-        patient_id = add_patient(patient_data)
+        patient_id = database.add_patient(patient_data)
         
         return jsonify({
             "success": True,
@@ -121,36 +121,7 @@ def update_patient(patient_id):
             "error": str(e)
         }), 500
 
-@app.route('/analyze', methods=['POST'])
-def analyze_data():
-    """POST endpoint - analyzes medical data using AI"""
-    try:
-        # Get JSON data from request
-        data = request.get_json()
-        
-        if 'patient_data' not in data:
-            return jsonify({
-                "success": False,
-                "error": "Missing 'patient_data' field"
-            }), 400
-        
-        patient_data = data['patient_data']
-        question = data.get('question', "Analyze this medical data")
-        
-        # Use Gemini to analyze the data
-        analysis = analyze_medical_data(patient_data, question)
-        
-        return jsonify({
-            "success": True,
-            "analysis": analysis,
-            "question": question
-        })
-        
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+
 
 
 

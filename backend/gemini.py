@@ -1,4 +1,7 @@
 # gemini.py
+# This file ALSO contains the functions that do all the data processing and graph algorithms
+
+
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -12,6 +15,82 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 # Initialize the model
 model = genai.GenerativeModel('gemini-2.5-flash')
+
+
+def parse_new_user(patient_data):
+    """
+    Parse new patient data, 
+    
+    Args:
+        patient_data (dict): Raw patient data from request (id, name, age, sex, doctor SHOULD BE FILLED OUT)
+        
+    Returns:
+        dict: Parsed patient data with required fields
+    """
+    parsed_data = {
+        "_id": patient_data.get('_id'),
+        "name": patient_data.get('name'),
+        "age": patient_data.get('age'),
+    }
+
+
+def get_drug_interactions(din1, din2):
+    """
+    Consults Gemini to get drug interactions between two DINS.
+    Returns a dict in the format:
+    {
+        "din1": Int,
+        "din2": Int,
+        "interaction_type": String,
+        "severity": String,
+        "advanced_info": String,
+        "research_links": [ ... ]
+    }
+    """
+    prompt = f"""
+You are a pharmaceutical expert AI assistant.
+
+Given two drugs with Drug Identification Numbers (DINs): {din1} and {din2}, please find and summarize any drug interactions between them.
+
+Return your answer **strictly as a single JSON object** with these fields:
+{{
+    "din1": Int,  # Drug Identification Number of the first drug
+    "din2": Int,  # Drug Identification Number of the second drug
+    "interaction_type": String,  # Type of interaction (e.g., "antagonistic", "synergistic")
+    "severity": String,  # Severity ("mild", "moderate", or "severe")
+    "advanced_info": String,  # Concise, layperson-friendly, science-based summary of the interaction
+    "research_links": [      # List of real, publicly accessible research papers or authoritative sources supporting this interaction
+        "https://example.com/research1",
+        "https://example.com/research2"
+    ]
+}}
+
+If no interaction is found, set "interaction_type" to "none", "severity" to "none", and "advanced_info" to "No known interaction found between these drugs.", and leave "research_links" as an empty list.
+
+Strictly output only the JSON. Do not add any explanation or text outside the JSON object.
+    """.strip()
+
+    response = model.generate_content(prompt)
+    # response.text or response.content depends on your Gemini SDK, but you want the raw model output
+    import json
+    try:
+        data = json.loads(response.text)
+    except Exception:
+        # fallback: try to extract the first JSON object
+        import re
+        m = re.search(r'\{.*\}', response.text, re.DOTALL)
+        data = json.loads(m.group(0)) if m else None
+    return data
+
+
+
+
+
+
+
+
+
+
 
 def send_gemini_prompt(prompt):
     """

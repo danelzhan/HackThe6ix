@@ -9,6 +9,7 @@ GEMINI_API_KEY
 Patient structure:
 {
     "_id": String, # USE THE EMAIL token from Auth0 !!! to be able to fetch user info
+                   # The _id is special to mongodb storage in that it is the token used to search for the right json object
     "name": String,
     "age": Number,
     "sex": String, # "male" or "female"
