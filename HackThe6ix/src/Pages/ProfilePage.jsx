@@ -1,10 +1,13 @@
 import React from 'react';
 import LoginButton from '../Components/LoginButton';
 import LogoutButton from '../Components/LogoutButton';
+import { ProfileHeader } from '../Components/ProfileHeader';
+
 
 export function ProfilePage(user) {
 
     console.log(user)
+
 
     if (user.user == null) {
         console.log("noUser")
@@ -17,7 +20,7 @@ export function ProfilePage(user) {
 
     return (
         <div className="app">
-            {user.name}
+            <ProfileHeader name={user.user.name} />
             <LogoutButton />
 
         </div>

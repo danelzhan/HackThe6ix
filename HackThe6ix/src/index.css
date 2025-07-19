@@ -46,3 +46,7 @@
     text-decoration: none;
 
 }
+
+#profile_header {
+    height: 10vh;
+}
