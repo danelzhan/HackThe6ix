@@ -19,10 +19,12 @@ Patient structure:
             "din": Int, # Drug Identification Number
             "dosage": String,
             "frequency": String,
+            "category": String,
             "time_taken": String, # format: "HH:MM" (24-hour format)
             "start_date": String, # format: "YYYY-MM-DD"
-            "end_date": String # format: "YYYY-MM-DD"
-        },
+            "end_date": String, # format: "YYYY-MM-DD"
+            "notes": String
+        }, 
         ...
     ],
     "edges": [ # list of drug interactions
