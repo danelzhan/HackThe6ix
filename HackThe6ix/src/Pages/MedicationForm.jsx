@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {  FiX } from 'react-icons/fi';
 
 export function MedicationForm() {
+  const navigate = useNavigate();
   const [medicationName, setMedicationName] = useState('');
   const [din, setDin] = useState('');
   const [category, setCategory] = useState('');
@@ -33,7 +35,7 @@ export function MedicationForm() {
     <div className="journal-container medication-form">
     <form onSubmit={handleSubmit} >
         <div className="form-header">
-          <button className="invisi-button" onClick={() => window.location.href = '/journal'}>
+          <button className="invisi-button" onClick={() => navigate('/journal')}>
             <FiX size={24} />
           </button>
           <h2 className="text-xl font-semibold text-center">Upload Medication</h2>
