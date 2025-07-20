@@ -1,6 +1,7 @@
 import React from 'react';
 import WelcomeHeader from '../Components/WelcomeHeader';
 import { FiChevronRight} from 'react-icons/fi';
+import UpcomingRefills from '../Components/UpcomingRefills';
 
 export function HomePage() {
 
@@ -43,9 +44,10 @@ export function HomePage() {
           <h3 className="journal-title">❗Check for Refills!</h3>
         </div>
         <div className="time-block component-container">
-          <p className="journal-text">Keep track of your medication refills.</p>
+          <p className="journal-text">Keep track of your medication refills:</p>
           <br />
-          <p className="journal-text">Set reminders for upcoming refills.</p>
+                  <UpcomingRefills />
+          {/* <p className="journal-text">Set reminders for upcoming refills.</p> */}
           </div>
         <div className="active-snippet"></div>
       </div>

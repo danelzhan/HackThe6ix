@@ -22,6 +22,7 @@ export function ProfilePage({user}) {
 
             <ProfileHeader name={user.name} />
             <button id="add_more_b" onClick={() => {navigate("/camera")}}>Add more</button>
+            <button id="add_more_b" >Remove</button>
             <LogoutButton />
             
 

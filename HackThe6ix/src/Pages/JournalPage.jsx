@@ -7,7 +7,6 @@ export function JournalPage() {
   return (
     <div className="app">
         <MedicationJournal />
-        <UpcomingRefills />
     </div>
   );
 }
