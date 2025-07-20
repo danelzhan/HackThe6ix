@@ -1,3 +1,10 @@
+/* Home */
+.journal-snippet {
+    display: flex;
+    justify-content: space-between;
+}
+
+
 /* Form Data */
 
 .form-button {
@@ -163,7 +170,6 @@ input {
   cursor: pointer;
   margin: 10px;
 }
-
 
 
 /* Calendar modal */
