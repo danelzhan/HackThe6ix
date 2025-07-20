@@ -434,6 +434,12 @@ body {
   justify-content: center;
 }
 
+#logoimg {
+    width: 25rem;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
 #add_more_b:hover {
   background: linear-gradient(90deg, #5570dd 0%, #87a1f7 100%);
   box-shadow: 0 4px 18px rgba(102, 128, 255, 0.15);

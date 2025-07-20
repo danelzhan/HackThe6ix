@@ -4,7 +4,7 @@ import LogoutButton from '../Components/LogoutButton';
 import { ProfileHeader } from '../Components/ProfileHeader';
 import { MedicationSection } from '../Components/MedicationSection';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-
+import logoImage from '../logo.png';
 
 export function ProfilePage({user}) {
 
@@ -15,7 +15,7 @@ export function ProfilePage({user}) {
     if (user == null) {
         return (
             <>
-                <h1 style={{paddingBottom: '2rem'}}>Perceptify</h1>
+                <img src={logoImage} alt="HackThe6ix Logo" className="logo" id="logoimg" />
                 <LoginButton />
             </>
 
