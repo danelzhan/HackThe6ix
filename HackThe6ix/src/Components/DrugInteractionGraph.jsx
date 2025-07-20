@@ -4,11 +4,13 @@ import { FaPills, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 import { useFetchCurrentUser } from '../Bridge.js';
 import GraphNode from './GraphNode.jsx';
 import GraphEdge from './GraphEdge.jsx';
+import DrugPopup from './DrugPopup.jsx';
 
 
 const DrugInteractionGraph = () => {
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
+  const nodesRef = useRef([]);
   const [tooltip, setTooltip] = useState({ 
     visible: false, 
     content: '', 
@@ -20,6 +22,8 @@ const DrugInteractionGraph = () => {
   const [selectedNode, setSelectedNode] = useState(null);
   const [highlightedEdges, setHighlightedEdges] = useState(new Set());
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [forceUpdate, setForceUpdate] = useState(0);
+  const [drugPopup, setDrugPopup] = useState({ visible: false, drug: null });
   const { fetchCurrentUser, userEmail, isAuthenticated } = useFetchCurrentUser();
 
   // Fetch real interactions and nodes from backend
@@ -155,6 +159,58 @@ const DrugInteractionGraph = () => {
     setSelectedNode(null);
     setHighlightedEdges(new Set());
     setTooltip(prev => ({ ...prev, visible: false }));
+    setDrugPopup({ visible: false, drug: null });
+  }, []);
+
+  const handleDrugClick = useCallback((drugNode) => {
+    console.log('Drug clicked:', drugNode);
+    console.log('Setting popup visible with drug:', drugNode.drug_name);
+    setDrugPopup({ visible: true, drug: drugNode });
+  }, []);
+
+  const handleClosePopup = useCallback(() => {
+    setDrugPopup({ visible: false, drug: null });
+  }, []);
+
+  // Drag handling functions
+  const handleDragStart = useCallback((event, nodeIndex) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const simulation = simulationRef.current;
+    const node = nodesRef.current[nodeIndex];
+    
+    if (simulation && node) {
+      simulation.alphaTarget(0.3).restart();
+      node.fx = node.x;
+      node.fy = node.y;
+    }
+  }, []);
+
+  const handleDrag = useCallback((event, nodeIndex) => {
+    const simulation = simulationRef.current;
+    const node = nodesRef.current[nodeIndex];
+    const svgRect = svgRef.current?.getBoundingClientRect();
+    
+    if (simulation && node && svgRect) {
+      const x = event.clientX - svgRect.left;
+      const y = event.clientY - svgRect.top;
+      
+      node.fx = x;
+      node.fy = y;
+    }
+  }, []);
+
+  const handleDragEnd = useCallback((event, nodeIndex) => {
+    const simulation = simulationRef.current;
+    const node = nodesRef.current[nodeIndex];
+    
+    if (simulation && node) {
+      simulation.alphaTarget(0);
+      // Release the fixed position so physics can continue
+      node.fx = null;
+      node.fy = null;
+    }
   }, []);
 
   // Update dimensions on window resize
@@ -178,16 +234,16 @@ const DrugInteractionGraph = () => {
   useEffect(() => {
     if (!patientNodes.length) return;
 
-    const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // Clear previous render
-
-    // Prepare data for D3
+    // Prepare data for D3 - preserve existing positions if they exist
     const nodes = patientNodes.map((node, index) => ({
       ...node,
       id: index,
-      x: dimensions.width / 2 + (Math.random() - 0.5) * 100,
-      y: dimensions.height / 2 + (Math.random() - 0.5) * 100
+      x: node.x || dimensions.width / 2 + (Math.random() - 0.5) * 100,
+      y: node.y || dimensions.height / 2 + (Math.random() - 0.5) * 100
     }));
+
+    // Store nodes reference for drag operations
+    nodesRef.current = nodes;
 
     const edges = generateInteractions();
 
@@ -203,20 +259,29 @@ const DrugInteractionGraph = () => {
         .distanceMax(300)
       )
       .force("center", d3.forceCenter(dimensions.width / 2, dimensions.height / 2))
-      .force("collision", d3.forceCollide().radius(30));
+      .force("collision", d3.forceCollide()
+        .radius(d => d.din ? 55 : 25) // 55 for drugs, 25 for food (with some padding)
+      );
 
     simulationRef.current = simulation;
 
-    // Update positions on tick
+    // Update positions on tick - this keeps physics running
     simulation.on("tick", () => {
-      // Force re-render by updating a state that triggers re-render
-      setPatientNodes([...nodes]);
+      // Update the original patientNodes array with new positions
+      nodes.forEach((node, index) => {
+        if (patientNodes[index]) {
+          patientNodes[index].x = node.x;
+          patientNodes[index].y = node.y;
+        }
+      });
+      // Force re-render
+      setForceUpdate(prev => prev + 1);
     });
 
     return () => {
       simulation.stop();
     };
-  }, [patientNodes.length, interactions.length, dimensions]);
+  }, [patientNodes.length, interactions.length, dimensions.width, dimensions.height]);
 
   return (
     <div id="graph_container" style={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -255,12 +320,17 @@ const DrugInteractionGraph = () => {
             <GraphNode
               key={index}
               node={node}
+              nodeIndex={index}
               x={node.x}
               y={node.y}
               isSelected={selectedNode === index}
               onClick={handleNodeClick}
               onMouseEnter={handleNodeMouseEnter}
               onMouseLeave={handleNodeMouseLeave}
+              onDragStart={handleDragStart}
+              onDrag={handleDrag}
+              onDragEnd={handleDragEnd}
+              onDrugClick={handleDrugClick}
             />
           );
         })}
@@ -311,6 +381,13 @@ const DrugInteractionGraph = () => {
           <span>Mild</span>
         </div>
       </div>
+
+      {/* Drug Popup */}
+      <DrugPopup
+        drugNode={drugPopup.drug}
+        isVisible={drugPopup.visible}
+        onClose={handleClosePopup}
+      />
     </div>
   );
 };

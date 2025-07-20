@@ -1,66 +1,103 @@
-import React from 'react';
-import { FaPills } from 'react-icons/fa';
+import React, { useState, useCallback } from 'react';
 
-const GraphNode = ({ node, x, y, isSelected, onClick, onMouseEnter, onMouseLeave }) => {
-  const nodeRadius = 20;
+const GraphNode = ({ 
+  node, 
+  x, 
+  y, 
+  nodeIndex,
+  isSelected, 
+  onClick, 
+  onMouseEnter, 
+  onMouseLeave,
+  onDragStart,
+  onDrag,
+  onDragEnd,
+  onDrugClick
+}) => {
+  const nodeRadius = node.din ? 50 : 20; // 50 for drugs, 20 for food
+  const [isDragging, setIsDragging] = useState(false);
   
   const getNodeColor = () => {
-    if (isSelected) {
-      return getDrugColor(node);
+    // Use specified colors: C5B6F1 for drugs, FFB8B8 for food
+    if (node.din) {
+      return '#C5B6F1'; // Purple for drugs
+    } else {
+      return '#FFB8B8'; // Pink for food
     }
-    return '#e0e0e0';
   };
 
-  const getDrugColor = (nodeData) => {
-    // Drug nodes have 'din' field, food nodes have 'name' only
-    if (nodeData.din) {
-      return nodeData.category === 'prescription' ? '#D2E5FF' : '#FFE8D2';
-    } else {
-      // Food nodes get a different color
-      return '#E8F5E8';
-    }
-  };
+  const handleMouseDown = useCallback((event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const startX = event.clientX;
+    const startY = event.clientY;
+    let hasDragged = false;
+    
+    setIsDragging(true);
+    onDragStart(event, nodeIndex);
+    
+    const handleMouseMove = (e) => {
+      const deltaX = Math.abs(e.clientX - startX);
+      const deltaY = Math.abs(e.clientY - startY);
+      
+      if (deltaX > 5 || deltaY > 5) {
+        hasDragged = true;
+      }
+      
+      onDrag(e, nodeIndex);
+    };
+    
+    const handleMouseUp = (e) => {
+      setIsDragging(false);
+      onDragEnd(e, nodeIndex);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      
+      // If we didn't drag much, treat it as a click
+      if (!hasDragged) {
+        setTimeout(() => {
+          if (node.din) {
+            console.log('Drug node clicked:', node);
+            onDrugClick && onDrugClick(node);
+          } else {
+            onClick && onClick(node);
+          }
+        }, 0);
+      }
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [nodeIndex, onDragStart, onDrag, onDragEnd, node, onDrugClick, onClick]);
 
   return (
     <g
       transform={`translate(${x}, ${y})`}
-      style={{ cursor: 'pointer' }}
-      onClick={() => onClick(node)}
+      style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       onMouseEnter={() => onMouseEnter(node, x, y)}
       onMouseLeave={onMouseLeave}
+      onMouseDown={handleMouseDown}
     >
       {/* Node circle */}
       <circle
         r={nodeRadius}
         fill={getNodeColor()}
-        stroke="#b0b0b0"
-        strokeWidth="2"
+        stroke="none"
         style={{
           filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.2))'
         }}
       />
       
-      {/* Icon */}
-      <foreignObject
-        x={-8}
-        y={-8}
-        width="16"
-        height="16"
-      >
-        <FaPills 
-          size={16} 
-          color={node.din ? "#666" : "#4a8b3a"} 
-        />
-      </foreignObject>
-      
-      {/* Label */}
+      {/* Label inside the circle */}
       <text
-        y={nodeRadius + 15}
+        y="0"
+        dy="0.35em"
         textAnchor="middle"
         fontSize="12"
         fontFamily="Arial, sans-serif"
         fill="#333"
-        style={{ userSelect: 'none' }}
+        style={{ userSelect: 'none', pointerEvents: 'none' }}
       >
         {node.drug_name || node.name}
       </text>
