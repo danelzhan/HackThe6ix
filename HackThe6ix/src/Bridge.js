@@ -2,23 +2,13 @@ import { Patient } from './Objects.js';
 
 const BRIDGE_URL = import.meta.env.VITE_BRIDGE_URL || 'http://localhost:5000';
 
-export async function postUser() {
+export async function postUser(user) {
     fetch(`${BRIDGE_URL}/patients`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
     },
-        body: JSON.stringify({
-            _id: "john.doe@email.com",
-            name: "John Doe",
-            age: 30,
-            sex: "male",
-            doctor: "Dr. Smith",
-            nodes: [],
-            edges: [],
-            medical_history: [],
-            allergies: []
-        }),
+        body: user,
     })
     .then(response => response.json())
     .then(data => console.log(data));

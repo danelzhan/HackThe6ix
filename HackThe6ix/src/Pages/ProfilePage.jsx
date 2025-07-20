@@ -9,23 +9,23 @@ export function ProfilePage(user) {
 
     console.log(user)
 
-
     if (user.user == null) {
-        console.log("noUser")
         return (
-            <div id='ProfileLoginButton'>
-                <LoginButton />
-            </div>
+            <LoginButton />
         )
-    }
-
+    } else {
     return (
         <div className="app">
+
             <ProfileHeader name={user.user.name} />
-            <MedicationSection user={user} />
             <LogoutButton />
             
 
         </div>
     );
+    }
+
+    
+
+
 }

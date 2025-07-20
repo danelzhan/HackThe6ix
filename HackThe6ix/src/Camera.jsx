@@ -32,7 +32,7 @@ export function Camera( {updateDrugs, user} ) {
     }
   }, [photo]);
 
-    async function capturePhoto(params) {
+    async function capturePhoto(user) {
       console.log("took pic")
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -48,9 +48,10 @@ export function Camera( {updateDrugs, user} ) {
 
           setPhoto(image);
           const drug = await main()
-          console.log(drug)
+          console.log(jsodrug)
 
-          
+          postNode(drug, user)
+
 
       }
     };
@@ -72,7 +73,7 @@ export function Camera( {updateDrugs, user} ) {
       <div id="video_container">
         {
           <>
-            <video onClick={() => {console.log("Video feed clicked - capturing photo"); capturePhoto();}} ref={videoRef} autoPlay playsInline style={{ height: "100vh" }} />
+            <video onClick={() => {console.log("Video feed clicked - capturing photo"); capturePhoto(user);}} ref={videoRef} autoPlay playsInline style={{ height: "100vh" }} />
             <canvas ref={canvasRef} style={{ display: "none" }} />
           </>
         }
