@@ -1,40 +1,76 @@
-import React from 'react';
-import { FaPills } from 'react-icons/fa';
+import React, { useState, useCallback } from 'react';
 
-const GraphNode = ({ node, x, y, isSelected, onClick, onMouseEnter, onMouseLeave }) => {
-  const nodeRadius = 20;
+const GraphNode = ({ 
+  node, 
+  x, 
+  y, 
+  nodeIndex,
+  isSelected, 
+  onClick, 
+  onMouseEnter, 
+  onMouseLeave,
+  onDragStart,
+  onDrag,
+  onDragEnd
+}) => {
+  const nodeRadius = node.din ? 50 : 20; // 50 for drugs, 20 for food
+  const [isDragging, setIsDragging] = useState(false);
   
   const getNodeColor = () => {
     if (isSelected) {
       return getDrugColor(node);
     }
-    return '#e0e0e0';
+    // Default colors when not selected
+    return node.din ? '#C5B6F1' : '#FFB8B8';
   };
 
   const getDrugColor = (nodeData) => {
-    // Drug nodes have 'din' field, food nodes have 'name' only
-    if (nodeData.din) {
-      return nodeData.category === 'prescription' ? '#D2E5FF' : '#FFE8D2';
-    } else {
-      // Food nodes get a different color
-      return '#E8F5E8';
-    }
+    // Selected state colors - use the same as default for consistency
+    return nodeData.din ? '#C5B6F1' : '#FFB8B8';
   };
+
+  const handleMouseDown = useCallback((event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    setIsDragging(true);
+    onDragStart(event, nodeIndex);
+    
+    const handleMouseMove = (e) => {
+      onDrag(e, nodeIndex);
+    };
+    
+    const handleMouseUp = (e) => {
+      setIsDragging(false);
+      onDragEnd(e, nodeIndex);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [nodeIndex, onDragStart, onDrag, onDragEnd]);
+
+  const handleClick = useCallback((event) => {
+    if (!isDragging) {
+      onClick(node);
+    }
+  }, [isDragging, node, onClick]);
 
   return (
     <g
       transform={`translate(${x}, ${y})`}
-      style={{ cursor: 'pointer' }}
-      onClick={() => onClick(node)}
+      style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+      onClick={handleClick}
       onMouseEnter={() => onMouseEnter(node, x, y)}
       onMouseLeave={onMouseLeave}
+      onMouseDown={handleMouseDown}
     >
       {/* Node circle */}
       <circle
         r={nodeRadius}
         fill={getNodeColor()}
-        stroke="#b0b0b0"
-        strokeWidth="2"
+        stroke="none"
         style={{
           filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.2))'
         }}
@@ -46,6 +82,7 @@ const GraphNode = ({ node, x, y, isSelected, onClick, onMouseEnter, onMouseLeave
         y={-8}
         width="16"
         height="16"
+        style={{ pointerEvents: 'none' }}
       >
         <FaPills 
           size={16} 
@@ -60,7 +97,7 @@ const GraphNode = ({ node, x, y, isSelected, onClick, onMouseEnter, onMouseLeave
         fontSize="12"
         fontFamily="Arial, sans-serif"
         fill="#333"
-        style={{ userSelect: 'none' }}
+        style={{ userSelect: 'none', pointerEvents: 'none' }}
       >
         {node.drug_name || node.name}
       </text>

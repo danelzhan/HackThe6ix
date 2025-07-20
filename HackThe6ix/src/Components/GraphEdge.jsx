@@ -21,7 +21,6 @@ const GraphEdge = ({ edge, sourceX, sourceY, targetX, targetY, isHighlighted }) 
 
   const strokeWidth = isHighlighted ? 3 : 1.5;
   const color = isHighlighted ? getInteractionColor(edge.severity) : '#b0b0b0';
-  const isDashed = edge.severity === 'moderate';
 
   // Calculate midpoint for label
   const midX = (sourceX + targetX) / 2;
@@ -37,7 +36,6 @@ const GraphEdge = ({ edge, sourceX, sourceY, targetX, targetY, isHighlighted }) 
         y2={targetY}
         stroke={color}
         strokeWidth={strokeWidth}
-        strokeDasharray={isDashed ? "5,5" : "none"}
         opacity={0.8}
       />
       
