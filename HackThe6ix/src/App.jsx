@@ -7,6 +7,7 @@ import { JournalPage } from './Pages/JournalPage.jsx';
 import { InteractionsPage } from './Pages/InteractionsPage.jsx';
 import { ProfilePage } from './Pages/ProfilePage.jsx';
 import { AddDrugPage } from './Pages/AddDrugPage.jsx';
+import { ForumPage } from './Pages/Forum.jsx';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import ScatterPlotOutlinedIcon from '@mui/icons-material/ScatterPlotOutlined';
@@ -80,6 +81,7 @@ function App() {
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
         <Route path="/profile" element={<ProfilePage user={userObj} />} />
         <Route path="/camera" element={<AddDrugPage />} />
+        <Route path="/forum" element={<ForumPage />} />
       </Routes>
       
     {showNavBar && (

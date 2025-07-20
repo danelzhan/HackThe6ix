@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import {main} from "./DrugScanParse.js"
 import { height } from "@mui/system";
 import ManualInputButton from "./Components/Button.jsx";
+import { postNode } from "./Bridge.js";
+import { Drug } from "./Objects.js";
 
 export function Camera( {updateDrugs, user} ) {
   const videoRef = useRef(null);
@@ -30,21 +32,27 @@ export function Camera( {updateDrugs, user} ) {
     }
   }, [photo]);
 
-    const capturePhoto = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (video && canvas) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const image = canvas.toDataURL("image/png");
+    async function capturePhoto(params) {
+      console.log("took pic")
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      if (video && canvas) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const image = canvas.toDataURL("image/png");
 
-        // Save to local storage
-        localStorage.setItem("capturedImage", image);
+          // Save to local storage
+          localStorage.setItem("capturedImage", image);
 
-        setPhoto(image);
-    }
+          setPhoto(image);
+          const drug = await main()
+          console.log(drug)
+
+          
+
+      }
     };
 
   const retakePhoto = () => {
@@ -53,31 +61,22 @@ export function Camera( {updateDrugs, user} ) {
 
   return (
     <>
-      <div className="camera_text">
-        <>
+      <div className="camera_text" style={{ pointerEvents: "none" }}>
+        <div>
           <p id="camera_label">Scan the label on your medication</p>
           <p id="camera_subtext">Tap anywhere to take a photo</p>
-        </>
-        <ManualInputButton onClick = {console.log("clicked")} label={"Manually input info instead"}/>
+        </div>
+        <ManualInputButton onClick={() => {console.log("clicked")}} label={"Manually input info instead"} style={{ pointerEvents: "auto" }}/>
       </div>
 
       <div id="video_container">
-        {!photo ? (
+        {
           <>
-            <video ref={videoRef} autoPlay playsInline style={{ height: "100vh" }} />
-            <button onClick={capturePhoto}>Capture Photo</button>
+            <video onClick={() => {console.log("Video feed clicked - capturing photo"); capturePhoto();}} ref={videoRef} autoPlay playsInline style={{ height: "100vh" }} />
             <canvas ref={canvasRef} style={{ display: "none" }} />
           </>
-        ) : (
-          <>
-            <img src={photo} alt="Captured" style={{ width: "30rem" }} />
-            <button onClick={retakePhoto}>Retake Photo</button>
-            <button onClick={() => {
-                
-              }}>Submit</button>
-          </>
-        )}
-    </div>
+        }
+      </div>
     </>
 
   );

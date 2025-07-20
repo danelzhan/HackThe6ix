@@ -6,8 +6,6 @@ const ai = new GoogleGenAI({
 });
 
 export async function main() {
-
-    testFetchBackend()
     
     console.log("Image Sent");
     const capturedImage = localStorage.getItem("capturedImage").replace(/^data:image\/png;base64,/, "");
