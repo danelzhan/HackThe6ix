@@ -76,25 +76,13 @@ const GraphNode = ({
         }}
       />
       
-      {/* Icon */}
-      <foreignObject
-        x={-8}
-        y={-8}
-        width="16"
-        height="16"
-        style={{ pointerEvents: 'none' }}
-      >
-        <FaPills 
-          size={16} 
-          color={node.din ? "#666" : "#4a8b3a"} 
-        />
-      </foreignObject>
-      
-      {/* Label */}
+      {/* Node name inside circle */}
       <text
-        y={nodeRadius + 15}
+        x={0}
+        y={0}
         textAnchor="middle"
-        fontSize="12"
+        dominantBaseline="central"
+        fontSize={nodeRadius > 30 ? "12" : "10"}
         fontFamily="Arial, sans-serif"
         fill="#333"
         style={{ userSelect: 'none', pointerEvents: 'none' }}

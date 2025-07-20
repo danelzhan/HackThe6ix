@@ -243,7 +243,7 @@ const DrugInteractionGraph = () => {
       )
       .force("charge", d3.forceManyBody()
         .strength(-800)
-        .distanceMax(300)
+        .distanceMax(60)
       )
       .force("center", d3.forceCenter(dimensions.width / 2, dimensions.height / 2))
       .force("collision", d3.forceCollide()
