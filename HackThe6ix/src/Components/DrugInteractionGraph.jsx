@@ -40,7 +40,7 @@ const DrugInteractionGraph = () => {
     };
     
     fetchPatientData();
-  }, [isAuthenticated, userEmail, fetchCurrentUser]);
+  }, [isAuthenticated, userEmail]);
 
   // Helper function to map backend severity to display type
   const mapSeverityToType = (severity) => {
