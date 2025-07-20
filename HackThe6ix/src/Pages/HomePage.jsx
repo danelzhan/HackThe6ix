@@ -1,12 +1,14 @@
 import React from 'react';
 import WelcomeHeader from '../Components/WelcomeHeader';
 import { FiChevronRight} from 'react-icons/fi';
+import { DrugBottomSheet } from '../Components/DrugBottomSheet';
 
 export function HomePage() {
 
   return (
     <div className="app">
-      <div className="component-container">
+      <DrugBottomSheet />
+      {/* <div className="component-container">
         <WelcomeHeader name="User" />
       </div>
 
@@ -27,7 +29,7 @@ export function HomePage() {
         <h3 className="journal-title">Upcoming Refills</h3>
 
 
-      </div>
+      </div> */}
     </div>
   );
 }
