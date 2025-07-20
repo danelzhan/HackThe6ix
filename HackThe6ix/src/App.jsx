@@ -72,6 +72,7 @@ function App() {
           console.log(user.email)
           const fetchedUser = await fetchUserByEmail(user.email);
           setUserObj(fetchedUser);
+          
         } catch (error) {
           console.error('Error fetching user:', error);
         }
@@ -86,7 +87,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
-        <Route path="/profile" element={<ProfilePage user={userObj} />} />
+        <Route path="/profile" element={<ProfilePage user={user} />} />
         <Route path="/camera" element={<AddDrugPage user ={user}/>} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/journal/medication-form" element={<MedicationForm />} />
