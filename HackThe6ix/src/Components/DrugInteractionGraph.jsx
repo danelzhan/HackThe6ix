@@ -4,6 +4,7 @@ import { FaPills, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
 import { useFetchCurrentUser } from '../Bridge.js';
 import GraphNode from './GraphNode.jsx';
 import GraphEdge from './GraphEdge.jsx';
+import DrugPopup from './DrugPopup.jsx';
 
 
 const DrugInteractionGraph = () => {
@@ -22,6 +23,7 @@ const DrugInteractionGraph = () => {
   const [highlightedEdges, setHighlightedEdges] = useState(new Set());
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [forceUpdate, setForceUpdate] = useState(0);
+  const [drugPopup, setDrugPopup] = useState({ visible: false, drug: null });
   const { fetchCurrentUser, userEmail, isAuthenticated } = useFetchCurrentUser();
 
   // Fetch real interactions and nodes from backend
@@ -157,6 +159,17 @@ const DrugInteractionGraph = () => {
     setSelectedNode(null);
     setHighlightedEdges(new Set());
     setTooltip(prev => ({ ...prev, visible: false }));
+    setDrugPopup({ visible: false, drug: null });
+  }, []);
+
+  const handleDrugClick = useCallback((drugNode) => {
+    console.log('Drug clicked:', drugNode);
+    console.log('Setting popup visible with drug:', drugNode.drug_name);
+    setDrugPopup({ visible: true, drug: drugNode });
+  }, []);
+
+  const handleClosePopup = useCallback(() => {
+    setDrugPopup({ visible: false, drug: null });
   }, []);
 
   // Drag handling functions
@@ -243,7 +256,7 @@ const DrugInteractionGraph = () => {
       )
       .force("charge", d3.forceManyBody()
         .strength(-800)
-        .distanceMax(60)
+        .distanceMax(300)
       )
       .force("center", d3.forceCenter(dimensions.width / 2, dimensions.height / 2))
       .force("collision", d3.forceCollide()
@@ -317,6 +330,7 @@ const DrugInteractionGraph = () => {
               onDragStart={handleDragStart}
               onDrag={handleDrag}
               onDragEnd={handleDragEnd}
+              onDrugClick={handleDrugClick}
             />
           );
         })}
@@ -367,6 +381,13 @@ const DrugInteractionGraph = () => {
           <span>Mild</span>
         </div>
       </div>
+
+      {/* Drug Popup */}
+      <DrugPopup
+        drugNode={drugPopup.drug}
+        isVisible={drugPopup.visible}
+        onClose={handleClosePopup}
+      />
     </div>
   );
 };

@@ -11,32 +11,40 @@ const GraphNode = ({
   onMouseLeave,
   onDragStart,
   onDrag,
-  onDragEnd
+  onDragEnd,
+  onDrugClick
 }) => {
   const nodeRadius = node.din ? 50 : 20; // 50 for drugs, 20 for food
   const [isDragging, setIsDragging] = useState(false);
   
   const getNodeColor = () => {
-    if (isSelected) {
-      return getDrugColor(node);
+    // Use specified colors: C5B6F1 for drugs, FFB8B8 for food
+    if (node.din) {
+      return '#C5B6F1'; // Purple for drugs
+    } else {
+      return '#FFB8B8'; // Pink for food
     }
-    // Default colors when not selected
-    return node.din ? '#C5B6F1' : '#FFB8B8';
-  };
-
-  const getDrugColor = (nodeData) => {
-    // Selected state colors - use the same as default for consistency
-    return nodeData.din ? '#C5B6F1' : '#FFB8B8';
   };
 
   const handleMouseDown = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
     
+    const startX = event.clientX;
+    const startY = event.clientY;
+    let hasDragged = false;
+    
     setIsDragging(true);
     onDragStart(event, nodeIndex);
     
     const handleMouseMove = (e) => {
+      const deltaX = Math.abs(e.clientX - startX);
+      const deltaY = Math.abs(e.clientY - startY);
+      
+      if (deltaX > 5 || deltaY > 5) {
+        hasDragged = true;
+      }
+      
       onDrag(e, nodeIndex);
     };
     
@@ -45,23 +53,28 @@ const GraphNode = ({
       onDragEnd(e, nodeIndex);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      
+      // If we didn't drag much, treat it as a click
+      if (!hasDragged) {
+        setTimeout(() => {
+          if (node.din) {
+            console.log('Drug node clicked:', node);
+            onDrugClick && onDrugClick(node);
+          } else {
+            onClick && onClick(node);
+          }
+        }, 0);
+      }
     };
     
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
-  }, [nodeIndex, onDragStart, onDrag, onDragEnd]);
-
-  const handleClick = useCallback((event) => {
-    if (!isDragging) {
-      onClick(node);
-    }
-  }, [isDragging, node, onClick]);
+  }, [nodeIndex, onDragStart, onDrag, onDragEnd, node, onDrugClick, onClick]);
 
   return (
     <g
       transform={`translate(${x}, ${y})`}
       style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-      onClick={handleClick}
       onMouseEnter={() => onMouseEnter(node, x, y)}
       onMouseLeave={onMouseLeave}
       onMouseDown={handleMouseDown}
@@ -76,13 +89,12 @@ const GraphNode = ({
         }}
       />
       
-      {/* Node name inside circle */}
+      {/* Label inside the circle */}
       <text
-        x={0}
-        y={0}
+        y="0"
+        dy="0.35em"
         textAnchor="middle"
-        dominantBaseline="central"
-        fontSize={nodeRadius > 30 ? "12" : "10"}
+        fontSize="12"
         fontFamily="Arial, sans-serif"
         fill="#333"
         style={{ userSelect: 'none', pointerEvents: 'none' }}
