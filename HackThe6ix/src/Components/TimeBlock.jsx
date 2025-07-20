@@ -1,23 +1,24 @@
-import React from 'react';
+
 import { FiCircle, FiCheck, FiX, FiPlus } from 'react-icons/fi';
 import '../App.css';
 
 const TimeBlock = ({ time, medications, editMode, onMedicationToggle }) => {
+
   return (
     <div className="time-block">
       <div className="time-header">
         <span className="time">{time}</span>
-        {editMode && <FiPlus className="add-med" />}
+        {editMode}
       </div>
-      
+
       <div className="medications-list">
         {medications.map((med) => (
           <div key={med.id || med.name} className="medication-item">
             {!editMode ? (
               <>
-                <button 
-                  className="check-button" 
-                  // NEEDS CHANGING LATER W BACKEND !!!
+                {/*!! TODO: ADD BACKEND */} 
+                <button
+                  className="check-button"
                   onClick={() => onMedicationToggle(med.name)}
                 >
                   {med.taken ? <FiCheck /> : <FiCircle />}
@@ -26,9 +27,9 @@ const TimeBlock = ({ time, medications, editMode, onMedicationToggle }) => {
               </>
             ) : (
               <>
-                <button 
-                  className="delete-button" 
-                  // NEEDS CHANGING LATER W BACKEND !!!
+                {/*!! TODO: ADD BACKEND */} 
+                <button
+                  className="delete-button"
                   onClick={() => console.log('Delete', med)}
                 >
                   <FiX />
@@ -39,6 +40,7 @@ const TimeBlock = ({ time, medications, editMode, onMedicationToggle }) => {
           </div>
         ))}
       </div>
+
     </div>
   );
 };

@@ -3,9 +3,10 @@ import LoginButton from '../Components/LoginButton';
 import LogoutButton from '../Components/LogoutButton';
 import { ProfileHeader } from '../Components/ProfileHeader';
 import { MedicationSection } from '../Components/MedicationSection';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 
 
-export function ProfilePage(user) {
+export function ProfilePage({user}) {
 
     console.log(user)
 

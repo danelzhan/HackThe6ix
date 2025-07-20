@@ -1,5 +1,133 @@
+.journal-snippet-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+    width: 3vw;
+}
+
+.journal-snippet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px; 
+}
+
+.select-space {
+    margin-bottom: 2rem;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+a {
+    text-decoration: none;
+}
+/* Form Data */
+
+.medication-form{
+    background-color: rgb(238, 238, 238);
+}
+
+input, select, textarea {
+  width: 100%; /* Fix 200px limit */
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border 0.3s ease;
+
+  padding: 10px;
+  margin: 10px 0;
+
+  width: 200px;
+}
+
+
+textarea{
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(71, 92, 255, 1);
+  box-shadow: 0 0 0 2px rgba(71, 92, 255, 0.2);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+
+.form-button {
+    
+    display: inline-block;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    background-color: rgba(71, 92, 255, 1);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-top: 20px;
+    margin-bottom:70px;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center; 
+  font-size: 0.7rem;
+}
+
+
+.form-trailing-label {
+  margin-left: 8px;
+  font-weight: normal;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.red {
+    color: red;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  margin-top: 20vw;
+  border-bottom: 1px solid grey;
+}
+
+
 /* Journal container */
-.journal-container {
+.journal-container, .component-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
@@ -25,7 +153,6 @@
   align-items: center;
   margin-bottom: 20px;
   padding: 50px;
-  border-radius: 10px;
 }
 
 .date-display {
@@ -42,8 +169,14 @@
   margin-bottom: 15px;
   border: none;
   background: rgba(197, 182, 241, 0.4);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   overflow: hidden;
+}
+
+.time-block:last-child
+{
+  margin-bottom: 5vw;
 }
 
 .time-header {
@@ -62,6 +195,20 @@
 .add-med {
   cursor: pointer;
   color: #1976d2;
+  margin: 10px;
+}
+
+.time-block-button {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background: rgba(197, 182, 241, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+
 }
 
 /* Medications list */
@@ -80,7 +227,7 @@
   border-bottom: none;
 }
 
-.check-button, .checked-button , .delete-button {
+.check-button, .checked-button , .delete-button , .invisi-button{
   background: none;
   border: none;
   cursor: pointer;

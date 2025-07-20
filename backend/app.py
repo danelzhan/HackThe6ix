@@ -241,7 +241,10 @@ def add_patient_node(patient_id):
                   example: "once daily"
                 category:
                   type: string
-                  example: "OTC"
+                  example: "Cardiovascular"
+                ingredient:
+                  type: string
+                  example: "Acetylsalicylic Acid"
                 time_taken:
                   type: string
                   example: "08:00"
@@ -260,6 +263,7 @@ def add_patient_node(patient_id):
                 - dosage
                 - frequency
                 - category
+                - ingredient
                 - time_taken
                 - start_date
                 - end_date

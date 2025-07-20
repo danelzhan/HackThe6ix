@@ -52,6 +52,7 @@ export function Camera( {updateDrugs, user} ) {
 
           postNode(drug, user)
 
+          console.log(user)
 
       }
     };

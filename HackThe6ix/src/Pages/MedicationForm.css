@@ -1,0 +1,123 @@
+/* Spinner animation for loading state */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Custom DatePicker styles */
+.react-datepicker {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-datepicker__input-container input {
+  width: 100% !important;
+  padding: 16px 20px !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  background-color: #fafafa !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.react-datepicker__input-container input:focus {
+  border-color: #C5B6F1 !important;
+  background-color: white !important;
+  box-shadow: 0 0 0 3px rgba(197, 182, 241, 0.1) !important;
+}
+
+.react-datepicker__header {
+  background-color: #C5B6F1 !important;
+  border-bottom: none !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.react-datepicker__current-month {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day-name {
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+.react-datepicker__navigation {
+  border: none !important;
+}
+
+.react-datepicker__navigation--previous {
+  border-right-color: white !important;
+}
+
+.react-datepicker__navigation--next {
+  border-left-color: white !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #9f7aea !important;
+  border-radius: 8px !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e0e7ff !important;
+  border-radius: 8px !important;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .medication-form-container {
+    padding: 10px !important;
+  }
+  
+  .medication-form-card {
+    border-radius: 16px !important;
+  }
+  
+  .medication-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Focus states for better accessibility */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: #C5B6F1 !important;
+  background-color: white !important;
+  box-shadow: 0 0 0 3px rgba(197, 182, 241, 0.1) !important;
+}
+
+/* Button hover effects */
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(197, 182, 241, 0.5);
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0px);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* Select dropdown arrow */
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
