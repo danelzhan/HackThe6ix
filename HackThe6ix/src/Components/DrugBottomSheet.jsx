@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css'
 import { ChevronRight, MoreHorizontal } from "lucide-react";
+import '../fonts.css' 
 
 export function DrugBottomSheet() {
   return (
@@ -66,6 +67,7 @@ export function DrugBottomSheet() {
             >
               <h1
                 style={{
+                    fontFamily: "SFT Ritam Sans TRIAL",
                   fontSize: "24px",
                   fontWeight: "700",
                   color: "#1E1E1E",
@@ -79,6 +81,7 @@ export function DrugBottomSheet() {
             </div>
             <div
               style={{
+                fontFamily: "SFT Ritam Sans TRIAL",
                 fontSize: "18px",
                 color: "#AF6AFF",
                 fontWeight: "500",
@@ -94,13 +97,14 @@ export function DrugBottomSheet() {
                 gap: "8px",
                 color: "#1E1E1E",
                 fontSize: "16px",
+                fontFamily: "SFT Ritam Sans TRIAL",
                 marginTop: "8px",
               }}
             >
               <span>Twice daily</span>
-              <span style={{ fontSize: "10px" }}>●</span>
+              <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "10px" }}>●</span>
               <span>Capsule</span>
-              <span style={{ fontSize: "10px" }}>●</span>
+              <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "10px" }}>●</span>
               <span>40mg</span>
             </div>
           </div>
@@ -116,6 +120,7 @@ export function DrugBottomSheet() {
             >
               <h2
                 style={{
+                    fontFamily: "SFT Ritam Sans TRIAL",
                   fontSize: "20px",
                   fontWeight: "700",
                   color: "#1E1E1E",
@@ -134,7 +139,7 @@ export function DrugBottomSheet() {
                   cursor: "pointer",
                 }}
               >
-                <span style={{ fontSize: "16px" }}>Edit Schedule</span>
+                <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "16px" }}>Edit Schedule</span>
                 <ChevronRight
                   style={{ width: "18px", height: "18px" }}
                   strokeWidth={1.5}
@@ -142,7 +147,7 @@ export function DrugBottomSheet() {
               </button>
             </div>
             <p
-              style={{ fontSize: "18px", color: "#1E1E1E", marginTop: "12px" }}
+              style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E", marginTop: "12px" }}
             >
               Swallow whole with food.
             </p>
@@ -157,6 +162,7 @@ export function DrugBottomSheet() {
                   borderRadius: "4px",
                   color: "#1E1E1E",
                   fontSize: "16px",
+                  fontFamily: "SFT Ritam Sans TRIAL",
                 }}
               >
                 9:00 PM
@@ -171,6 +177,7 @@ export function DrugBottomSheet() {
                   borderRadius: "4px",
                   color: "#1E1E1E",
                   fontSize: "16px",
+                  fontFamily: "SFT Ritam Sans TRIAL",
                 }}
               >
                 11:00 PM
@@ -181,16 +188,16 @@ export function DrugBottomSheet() {
           {/* Usage Considerations */}
           <div style={{ gap: "12px", marginBottom: "40px" }}>
             <h2
-              style={{ fontSize: "20px", fontWeight: "700", color: "#1E1E1E" }}
+              style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "20px", fontWeight: "700", color: "#1E1E1E" }}
             >
               Usage Considerations
             </h2>
             <div style={{ gap: "4px", marginTop: "12px" }}>
-              <div style={{ fontSize: "18px", color: "#1E1E1E" }}>
+              <div style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E" }}>
                 • Increased sensitivity to sun
               </div>
               <div
-                style={{ fontSize: "18px", color: "#1E1E1E", marginTop: "4px" }}
+                style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E", marginTop: "4px" }}
               >
                 • Alcohol consumption may cause nausea
               </div>
@@ -209,6 +216,7 @@ export function DrugBottomSheet() {
               >
                 <h2
                   style={{
+                    fontFamily: "SFT Ritam Sans TRIAL",
                     fontSize: "20px",
                     fontWeight: "700",
                     color: "#1E1E1E",
@@ -256,7 +264,7 @@ export function DrugBottomSheet() {
                       borderRadius: "50%",
                     }}
                   ></div>
-                  <span style={{ fontSize: "14px", color: "#7A7A7A" }}>
+                  <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "14px", color: "#7A7A7A" }}>
                     Severe
                   </span>
                 </div>
@@ -271,7 +279,7 @@ export function DrugBottomSheet() {
                       borderRadius: "50%",
                     }}
                   ></div>
-                  <span style={{ fontSize: "14px", color: "#7A7A7A" }}>
+                  <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "14px", color: "#7A7A7A" }}>
                     Moderate
                   </span>
                 </div>
@@ -286,7 +294,7 @@ export function DrugBottomSheet() {
                       borderRadius: "50%",
                     }}
                   ></div>
-                  <span style={{ fontSize: "14px", color: "#7A7A7A" }}>
+                  <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "14px", color: "#7A7A7A" }}>
                     Mild
                   </span>
                 </div>
@@ -302,7 +310,7 @@ export function DrugBottomSheet() {
                       borderRadius: "50%",
                     }}
                   ></div>
-                  <span style={{ fontSize: "14px", color: "#7A7A7A" }}>
+                  <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "14px", color: "#7A7A7A" }}>
                     None
                   </span>
                 </div>
@@ -322,7 +330,7 @@ export function DrugBottomSheet() {
                     borderRadius: "50%",
                   }}
                 ></div>
-                <span style={{ fontSize: "18px", color: "#1E1E1E" }}>
+                <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E" }}>
                   Sertraline (Zoloft)
                 </span>
               </div>
@@ -342,7 +350,7 @@ export function DrugBottomSheet() {
                     borderRadius: "50%",
                   }}
                 ></div>
-                <span style={{ fontSize: "18px", color: "#1E1E1E" }}>
+                <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E" }}>
                   Lisdexamfetamine (Vyvanse)
                 </span>
               </div>
@@ -362,7 +370,7 @@ export function DrugBottomSheet() {
                     borderRadius: "50%",
                   }}
                 ></div>
-                <span style={{ fontSize: "18px", color: "#1E1E1E" }}>
+                <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E" }}>
                   Adderall (amphetamine/dextroamphetamine)
                 </span>
               </div>
@@ -383,7 +391,7 @@ export function DrugBottomSheet() {
                     borderRadius: "50%",
                   }}
                 ></div>
-                <span style={{ fontSize: "18px", color: "#1E1E1E" }}>
+                <span style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E" }}>
                   Melatonin
                 </span>
               </div>
@@ -395,6 +403,7 @@ export function DrugBottomSheet() {
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <h2
                 style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                   fontSize: "20px",
                   fontWeight: "700",
                   color: "#1E1E1E",
@@ -406,8 +415,8 @@ export function DrugBottomSheet() {
                 style={{
                   paddingLeft: "12px",
                   paddingRight: "12px",
-                  paddingTop: "6px",
-                  paddingBottom: "6px",
+                  paddingTop: "2px",
+                  paddingBottom: "2px",
                   background:
                     "linear-gradient(to right, rgba(255, 184, 184, 0.7), rgba(255, 184, 184, 0.7))",
                   border: "1.2px solid #E10000",
@@ -416,6 +425,7 @@ export function DrugBottomSheet() {
               >
                 <span
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "12px",
                     color: "#E10000",
                     fontWeight: "500",
@@ -436,11 +446,12 @@ export function DrugBottomSheet() {
               }}
             >
               <div style={{ gap: "8px" }}>
-                <div style={{ fontSize: "16px", color: "#7A7A7A" }}>
+                <div style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "16px", color: "#7A7A7A" }}>
                   Doses Until
                 </div>
                 <div
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "16px",
                     color: "#7A7A7A",
                     marginTop: "8px",
@@ -450,6 +461,7 @@ export function DrugBottomSheet() {
                 </div>
                 <div
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "16px",
                     color: "#7A7A7A",
                     marginTop: "8px",
@@ -459,6 +471,7 @@ export function DrugBottomSheet() {
                 </div>
                 <div
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "16px",
                     color: "#7A7A7A",
                     marginTop: "8px",
@@ -468,11 +481,12 @@ export function DrugBottomSheet() {
                 </div>
               </div>
               <div style={{ gap: "8px" }}>
-                <div style={{ fontSize: "16px", color: "#1E1E1E" }}>
+                <div style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "16px", color: "#1E1E1E" }}>
                   08/01/2025
                 </div>
                 <div
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "16px",
                     color: "#1E1E1E",
                     marginTop: "8px",
@@ -482,6 +496,7 @@ export function DrugBottomSheet() {
                 </div>
                 <div
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "16px",
                     color: "#1E1E1E",
                     marginTop: "8px",
@@ -491,6 +506,7 @@ export function DrugBottomSheet() {
                 </div>
                 <div
                   style={{
+                    fontFamily: 'SFT Ritam Sans TRIAL',
                     fontSize: "16px",
                     color: "#1E1E1E",
                     marginTop: "8px",
@@ -505,12 +521,12 @@ export function DrugBottomSheet() {
           {/* Notes */}
           <div style={{ gap: "12px" }}>
             <h2
-              style={{ fontSize: "20px", fontWeight: "700", color: "#1E1E1E" }}
+              style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "20px", fontWeight: "700", color: "#1E1E1E" }}
             >
               Notes
             </h2>
             <div
-              style={{ fontSize: "18px", color: "#1E1E1E", marginTop: "12px" }}
+              style={{ fontFamily: "SFT Ritam Sans TRIAL", fontSize: "18px", color: "#1E1E1E", marginTop: "12px" }}
             >
               Lorem ipsum dolor sit amet.
             </div>
