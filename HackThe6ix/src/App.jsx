@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { postUser, fetchUserByEmail } from './Bridge.js';
+import { postUser, useFetchCurrentUser } from './Bridge.js';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { HomePage } from "./Pages/HomePage.jsx"
 import { JournalPage } from './Pages/JournalPage.jsx';
@@ -18,6 +18,7 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 
 function App() {
   var [userObj, setUserObj] = useState(null); // Add this line
+  const { fetchCurrentUser } = useFetchCurrentUser();
   const location = useLocation();
 
   // Hide nav bar on /camera
@@ -68,12 +69,16 @@ function App() {
   useEffect(() => {
     if (isAuthenticated && user) {
       (async () => {
-        console.log(user.email)
-        const fetchedUser = await fetchUserByEmail(user.email);
-        setUserObj(fetchedUser);
+        try {
+          console.log(user.email)
+          const fetchedUser = await fetchCurrentUser();
+          setUserObj(fetchedUser);
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
       })();
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, fetchCurrentUser]);
 
   return (
     <div className="app">

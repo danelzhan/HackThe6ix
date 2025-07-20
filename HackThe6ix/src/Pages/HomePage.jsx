@@ -7,6 +7,7 @@ export function HomePage() {
   return (
     <div className="app">
       <div className="component-container">
+        {/* !! TODO: BACKEND ADD*/ }
         <WelcomeHeader name="User" />
       </div>
 
@@ -15,19 +16,22 @@ export function HomePage() {
         <button className="invisi-button" onClick={() => window.location.href = '/journal'}>
         <FiChevronRight  size={24} />
         </button>
-
       </div>
 
+      
+
+{/* 
       <div className="active-snippet">
         <h3 className="journal-title">Active Usage Considerations</h3>
 
-      </div>
 
-      <div className="refills-snippet">
+      </div> */}
+
+      {/* <div className="refills-snippet">
         <h3 className="journal-title">Upcoming Refills</h3>
 
 
-      </div>
+      </div> */}
     </div>
   );
 }
