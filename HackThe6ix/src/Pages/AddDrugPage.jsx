@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Camera } from "./Camera.js";
+import { Camera } from '../Camera';
 
-function App() {
+export function AddDrugPage() {
 
   return (
     <div className="app">
-      <DrugInteractionGraph medications={medications} />
       <Camera />
-      {userObj && <div>User: {userObj.name}</div>}
     </div>
   );
 }
-
-export default App;

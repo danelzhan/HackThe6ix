@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import {main} from "./DrugScanParse.js"
+import { height } from "@mui/system";
+import ManualInputButton from "./Components/Button.jsx";
 
 export function Camera( {updateDrugs, user} ) {
   const videoRef = useRef(null);
@@ -50,22 +52,33 @@ export function Camera( {updateDrugs, user} ) {
   };
 
   return (
-    <div>
-      {!photo ? (
+    <>
+      <div className="camera_text">
         <>
-          <video ref={videoRef} autoPlay playsInline style={{ width: "30rem" }} />
-          <button onClick={capturePhoto}>Capture Photo</button>
-          <canvas ref={canvasRef} style={{ display: "none" }} />
+          <p id="camera_label">Scan the label on your medication</p>
+          <p id="camera_subtext">Tap anywhere to take a photo</p>
         </>
-      ) : (
-        <>
-          <img src={photo} alt="Captured" style={{ width: "30rem" }} />
-          <button onClick={retakePhoto}>Retake Photo</button>
-          <button onClick={() => {
-              
-            }}>Submit</button>
-        </>
-      )}
+        <ManualInputButton onClick = {console.log("clicked")} label={"Manually input info instead"}/>
+      </div>
+
+      <div id="video_container">
+        {!photo ? (
+          <>
+            <video ref={videoRef} autoPlay playsInline style={{ height: "100vh" }} />
+            <button onClick={capturePhoto}>Capture Photo</button>
+            <canvas ref={canvasRef} style={{ display: "none" }} />
+          </>
+        ) : (
+          <>
+            <img src={photo} alt="Captured" style={{ width: "30rem" }} />
+            <button onClick={retakePhoto}>Retake Photo</button>
+            <button onClick={() => {
+                
+              }}>Submit</button>
+          </>
+        )}
     </div>
+    </>
+
   );
 }

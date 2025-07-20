@@ -2,6 +2,7 @@ import React from 'react';
 import LoginButton from '../Components/LoginButton';
 import LogoutButton from '../Components/LogoutButton';
 import { ProfileHeader } from '../Components/ProfileHeader';
+import { MedicationSection } from '../Components/MedicationSection';
 
 
 export function ProfilePage(user) {
@@ -21,6 +22,7 @@ export function ProfilePage(user) {
     return (
         <div className="app">
             <ProfileHeader name={user.user.name} />
+            <MedicationSection user={user} />
             <LogoutButton />
 
         </div>
