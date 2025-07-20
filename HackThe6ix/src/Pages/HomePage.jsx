@@ -12,13 +12,13 @@ export function HomePage() {
       </div>
 
       <div className="journal-snippet">
-        <h3 className="journal-title">Journal</h3>
-        <button className="invisi-button" onClick={() => window.location.href = '/journal'}>
+        
+        <button className="journal-snippet-button" onClick={() => window.location.href = '/journal'}>
         <FiChevronRight  size={24} />
-        </button>
+        </button><h3 className="journal-title">Journal</h3>
       </div>
 
-      
+
 
 {/* 
       <div className="active-snippet">
