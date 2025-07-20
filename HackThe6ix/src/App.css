@@ -1,5 +1,5 @@
 /* Journal container */
-.journal-container {
+.journal-container, .component-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
@@ -25,7 +25,6 @@
   align-items: center;
   margin-bottom: 20px;
   padding: 50px;
-  border-radius: 10px;
 }
 
 .date-display {
@@ -80,7 +79,7 @@
   border-bottom: none;
 }
 
-.check-button, .checked-button , .delete-button {
+.check-button, .checked-button , .delete-button , .invisi-button{
   background: none;
   border: none;
   cursor: pointer;

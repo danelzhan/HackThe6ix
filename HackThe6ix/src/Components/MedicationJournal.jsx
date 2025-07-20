@@ -9,6 +9,7 @@ const MedicationJournal = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  // SAMPLE DATA !! NEED TO BE REPLACED
   const [journal, setJournal] = useState({
     '08:00': [
       { name: 'Ibuprofen', taken: false },
@@ -21,6 +22,8 @@ const MedicationJournal = () => {
       { name: 'Ibuprofen', taken: false }
     ]
   });
+
+
 
   const handleDateChange = (newDate) => {
     setCurrentDate(newDate);
