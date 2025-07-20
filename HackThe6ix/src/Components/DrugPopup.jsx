@@ -126,15 +126,11 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
       {/* Backdrop */}
       <div 
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
           backgroundColor: `rgba(0, 0, 0, ${isAnimating ? '0.5' : '0'})`,
           zIndex: 1000,
           transition: 'background-color 0.4s ease',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          width: '25rem'
         }}
         onClick={handleClose}
       >
@@ -143,21 +139,21 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
           style={{
             position: 'fixed',
             bottom: 0,
-            left: 0,
-            right: 0,
             backgroundColor: 'white',
             borderTopLeftRadius: '24px',
             borderTopRightRadius: '24px',
             borderBottomLeftRadius: '0px',
             borderBottomRightRadius: '0px',
-            maxHeight: '85vh',
+            maxHeight: '70vh',
             minHeight: '60vh',
             overflow: 'hidden',
             boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.2)',
             transform: `translateY(${isAnimating ? '0%' : '100%'})`,
             transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            width: '25rem',
+            zIndex: 99999
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -234,10 +230,10 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
           <div style={{ 
             padding: '24px', 
             flex: 1, 
-            overflowY: 'auto',
+            overflowY: 'scroll',
             backgroundColor: '#fafafa'
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '25rem' }}>
               {/* Basic Information */}
               <div style={{
                 backgroundColor: 'white',
@@ -517,11 +513,12 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
                 !['din', 'drug_name', 'dosage', 'frequency', 'category', 'notes', 'x', 'y', 'id'].includes(key) && value
               ) && (
                 <div style={{
+                  paddingBottom: '10rem',
                   backgroundColor: 'white',
                   padding: '20px',
                   borderRadius: '16px',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-                  border: '1px solid #e5e7eb'
+                  border: '1px solid #e5e7eb',
                 }}>
                   <h3 style={{ 
                     margin: '0 0 16px 0', 
@@ -536,11 +533,11 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
                       width: '8px',
                       height: '8px',
                       backgroundColor: '#C5B6F1',
-                      borderRadius: '50%'
+                      borderRadius: '50%',
                     }} />
                     Additional Details
                   </h3>
-                  <div style={{ display: 'grid', gap: '8px' }}>
+                  <div style={{ display: 'grid', gap: '8px'}}>
                     {Object.entries(drugNode).map(([key, value]) => {
                       // Skip fields we've already displayed
                       if (['din', 'drug_name', 'dosage', 'frequency', 'category', 'notes', 'x', 'y', 'id'].includes(key) || !value) {
@@ -553,7 +550,7 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
                           backgroundColor: '#f8fafc',
                           borderRadius: '8px',
                           display: 'flex',
-                          justifyContent: 'space-between'
+                          justifyContent: 'space-between',
                         }}>
                           <span style={{ 
                             fontWeight: '600', 
@@ -562,7 +559,7 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
                           }}>
                             {key.replace(/_/g, ' ')}:
                           </span>
-                          <span style={{ color: '#1f2937', fontWeight: '500' }}>{String(value)}</span>
+                          <span style={{ color: '#1f2937', fontWeight: '500',}}>{String(value)}</span>
                         </div>
                       );
                     })}

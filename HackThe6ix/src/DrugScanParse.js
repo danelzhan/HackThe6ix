@@ -29,6 +29,8 @@ export async function main() {
     const drugFormData = await fetchDrugForm(id);
     const drugIngredientData = await fetchDrugIngredient(id);
 
+    console.log(din)
+
     const drug = new Drug(
         drugProductData[0]?.brand_name || "",
         drugIngredientData[0]?.ingredient_name || "",

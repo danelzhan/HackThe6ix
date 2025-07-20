@@ -68,6 +68,7 @@ export function Camera( {updateDrugs, user} ) {
     <>
       <div className="camera_text" style={{ pointerEvents: "none" }}>
         <div>
+          <div onClick={() => {navigate("/interactions")}} style={{position: "fixed", top: 0, left: 0}}>Back</div>
           <p id="camera_label">Scan the label on your medication</p>
           <p id="camera_subtext">Tap anywhere to take a photo</p>
         </div>
@@ -84,6 +85,7 @@ export function Camera( {updateDrugs, user} ) {
       <div id="video_container">
         {
           <>
+            <div onClick={() => {navigate("/interactions")}}>Back</div>
             <video onClick={() => {console.log("Video feed clicked - capturing photo"); capturePhoto(user);}} ref={videoRef} autoPlay playsInline style={{ height: "100vh" }} />
             <canvas ref={canvasRef} style={{ display: "none" }} />
           </>

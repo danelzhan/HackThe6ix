@@ -2,8 +2,13 @@ import React from 'react';
 import WelcomeHeader from '../Components/WelcomeHeader';
 import { FiChevronRight} from 'react-icons/fi';
 import UpcomingRefills from '../Components/UpcomingRefills';
+import { useNavigate } from 'react-router-dom';
 
-export function HomePage() {
+export function HomePage(user) {
+
+  const navigate = useNavigate();
+
+  if (user.user == null) navigate("./profile");
 
   return (
     <div className="app">

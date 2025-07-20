@@ -14,7 +14,11 @@ export function ProfilePage({user}) {
 
     if (user == null) {
         return (
-            <LoginButton />
+            <>
+                <h1 style={{paddingBottom: '2rem'}}>Perceptify</h1>
+                <LoginButton />
+            </>
+
         )
     } else {
     return (

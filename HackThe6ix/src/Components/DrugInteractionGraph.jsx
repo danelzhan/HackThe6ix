@@ -363,31 +363,6 @@ const DrugInteractionGraph = () => {
         </div>
       )}
 
-      {/* Legend */}
-      <div style={{
-        position: 'absolute',
-        top: '1rem',
-        left: '1rem',
-        backgroundColor: 'white',
-        padding: '10px',
-        borderRadius: '5px',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-        zIndex: 50
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-          <FaExclamationTriangle color="red" style={{ marginRight: '5px' }} />
-          <span>Severe</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-          <FaExclamationTriangle color="orange" style={{ marginRight: '5px' }} />
-          <span>Moderate</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <FaCheckCircle color="green" style={{ marginRight: '5px' }} />
-          <span>Mild</span>
-        </div>
-      </div>
-
       {/* Drug Popup */}
       <DrugPopup
         drugNode={drugPopup.drug}

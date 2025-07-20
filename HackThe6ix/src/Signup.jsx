@@ -47,7 +47,7 @@ export function SignupPage(user) {
     return (
         <div className="app">
         <form onSubmit={handleSubmit}>
-        <label>
+        <label style={{  marginTop: '1.5rem'}}>
             Email (_id): <input name="_id" value={form._id} onChange={handleChange} required />
         </label>
         <br />
@@ -80,7 +80,9 @@ export function SignupPage(user) {
             Medical History (comma-separated): <input name="medical_history" value={form.medical_history} onChange={handleChange} />
         </label>
         <br />
-        <button type="submit">Submit</button>
+        <div style={{width: "25rem", display: "flex", justifyContent: "center"}}>
+        <button type="submit" style={{marginBottom: '1rem', width: '20rem'}}>Submit</button>
+        </div>
         </form>
 
         </div>

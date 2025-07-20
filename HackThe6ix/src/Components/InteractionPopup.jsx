@@ -129,7 +129,8 @@ const InteractionPopup = ({ interaction, isVisible, onClose }) => {
           backgroundColor: `rgba(0, 0, 0, ${isAnimating ? '0.5' : '0'})`,
           zIndex: 1001, // Higher than DrugPopup
           transition: 'background-color 0.4s ease',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          width: '25rem'
         }}
         onClick={handleClose}
       >
@@ -142,15 +143,14 @@ const InteractionPopup = ({ interaction, isVisible, onClose }) => {
             transform: `translate(-50%, -50%) scale(${isAnimating ? '1' : '0.8'})`,
             backgroundColor: 'white',
             borderRadius: '24px',
-            maxWidth: '600px',
-            width: '90vw',
+            width: '24rem',
             maxHeight: '80vh',
             overflow: 'hidden',
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
             opacity: isAnimating ? '1' : '0',
             transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
           }}
           onClick={(e) => e.stopPropagation()}
         >

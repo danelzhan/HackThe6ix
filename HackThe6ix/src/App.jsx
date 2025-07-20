@@ -86,7 +86,7 @@ function App() {
     <div className="app">
       {/* Routing */}
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<ProfilePage user={userObj} />} />
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
         <Route path="/profile" element={<ProfilePage user={userObj} />} />
@@ -98,12 +98,6 @@ function App() {
     {showNavBar && (
         <div id="nav_bar_container">
           <nav id="nav_bar">
-            <Link to="/">
-              <div className="nav_bar_link_container">
-                <HomeOutlinedIcon />
-                <p>Home</p>
-              </div>
-            </Link>
             <Link to="/journal">
               <div className="nav_bar_link_container">
                 <BookOutlinedIcon />

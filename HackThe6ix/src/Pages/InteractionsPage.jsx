@@ -6,9 +6,6 @@ export function InteractionsPage() {
 
   return (
     <div className="app">
-      <div className="gradient-header">
-        <h1>Drug Interactions</h1>
-      </div>
       <DrugInteractionGraph />
     </div>
   );
