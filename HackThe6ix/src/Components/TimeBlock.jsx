@@ -8,11 +8,7 @@ const TimeBlock = ({ time, medications, editMode, onMedicationToggle }) => {
     <div className="time-block">
       <div className="time-header">
         <span className="time">{time}</span>
-        {editMode && (
-          <button className="invisi-button" onClick={() =>window.location.href = '/journal/medication-form'}>
-            <FiPlus className="add-med" />
-          </button>
-        )}
+        {editMode}
       </div>
 
       <div className="medications-list">

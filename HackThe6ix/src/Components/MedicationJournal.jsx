@@ -4,7 +4,7 @@ import CalendarModal from './CalendarModal';
 import TimeBlock from './TimeBlock';
 import EditButton from './EditButton';
 import '../App.css';
-
+import { FiCircle, FiCheck, FiX, FiPlus } from 'react-icons/fi';
 const MedicationJournal = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
@@ -81,6 +81,12 @@ const MedicationJournal = () => {
           onClose={() => setShowCalendar(false)}
         />
       )}
+
+      <div className="time-block">
+        <button className="time-block-button" onClick={() =>window.location.href = '/journal/medication-form'}>
+            <FiPlus className="add-med" />
+        </button>
+      </div>
     </div>
   );
 };

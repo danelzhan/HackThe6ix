@@ -18,11 +18,14 @@ export function HomePage() {
         </button>
       </div>
 
+      
+
+{/* 
       <div className="active-snippet">
         <h3 className="journal-title">Active Usage Considerations</h3>
-        
 
-      </div>
+
+      </div> */}
 
       {/* <div className="refills-snippet">
         <h3 className="journal-title">Upcoming Refills</h3>
