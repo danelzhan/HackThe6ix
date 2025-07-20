@@ -18,7 +18,7 @@ export async function main() {
                     data: capturedImage,
                 },
             },
-            { text: "The image should be a picture of a medication. From the image, if possible, return only the din number with no formatting, only the number" },
+            { text: "The image should be a picture of a medication, however it might not be in medication container. If there is a DIN anywhere, assume its a medicine. From the image, if possible, return only the din number with no formatting, only the number" },
         ]
     });
     console.log(response.text);
