@@ -16,7 +16,7 @@ export function ProfileHeader({name}) {
         greeting = "Good evening";
     }
   
-    return <div id="profile_header">
+    return  <div className="gradient-header profile-header">
 
         <p className="greeting">{greeting}, {name}</p>
 

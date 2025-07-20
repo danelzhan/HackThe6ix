@@ -18,12 +18,12 @@ export function ProfilePage({user}) {
         )
     } else {
     return (
-        <div className="app">
+        <div className="app profile-component">
 
             <ProfileHeader name={user.name} />
-            <p onClick={() => {navigate("/camera")}}>Add more.</p>
-            <LogoutButton />
-            
+            < button className="profile-button" onClick={() => {navigate("/camera")}}>Add more</button>
+            <LogoutButton/>
+           
 
         </div>
     );

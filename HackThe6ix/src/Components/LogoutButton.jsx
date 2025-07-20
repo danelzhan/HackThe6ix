@@ -5,7 +5,7 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <button onClick={() => logout({ logoutParams: { returnTo: "http://localhost:5173/profile" } })}>
+    <button className="profile-button" onClick={() => logout({ logoutParams: { returnTo: "http://localhost:5173/profile" } })}>
       Log Out
     </button>
   );

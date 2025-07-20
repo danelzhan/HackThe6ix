@@ -1,3 +1,27 @@
+
+
+.profile-header{
+  width: 25rem;
+  top: 0;
+  position: fixed;
+}
+
+.profile-button {
+  background: linear-gradient(90deg, #6680ff 0%, #a0b5ff 100%);
+  color: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  box-shadow: 0 2px 8px rgba(102, 128, 255, 0.08);
+  outline: none;
+  cursor: pointer;
+  transition: 0.2s, box-shadow 0.2s, transform 0.1s;
+  width: 30vw;
+  height: 8vw;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+}
+
 .journal-snippet-button {
     background: none;
     border: none;
@@ -151,8 +175,9 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 50px;
+  max-width: 25rem;
+  height: 8rem;
+  color: #fff;
 }
 
 .date-display {

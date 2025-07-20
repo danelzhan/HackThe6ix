@@ -291,14 +291,14 @@ body {
 
 }
 
-#profile_header {
+/* #profile_header {
     background: linear-gradient(150deg, #7B89FF, #A6FF76);
     min-height: 8rem;
     font-size: 36px;
     display: flex;
     align-items: end;   
     color: #FFFFFF;
-}
+} */
 
 #video_container {
     width: 25rem;

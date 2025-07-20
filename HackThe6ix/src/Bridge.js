@@ -1,5 +1,6 @@
 import { Patient } from './Objects.js';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 
 const BRIDGE_URL = import.meta.env.VITE_BRIDGE_URL || 'http://localhost:5000';
 
@@ -59,5 +60,5 @@ export async function postNode(node, patient_ID) {
         body: JSON.stringify(wrapped),
     })
     .then(response => response.json())
-    .then(data => console.log(data));
+    .then(data => console.log(data))
 }

@@ -69,7 +69,6 @@ export function Camera( {updateDrugs, user} ) {
           <p id="camera_label">Scan the label on your medication</p>
           <p id="camera_subtext">Tap anywhere to take a photo</p>
         </div>
-        <ManualInputButton onClick={() => {console.log("clicked")}} label={"Manually input info instead"} style={{ pointerEvents: "auto" }}/>
       </div>
 
       <div id="video_container">
