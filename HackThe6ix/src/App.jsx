@@ -6,6 +6,8 @@ import { HomePage } from "./Pages/HomePage.jsx"
 import { JournalPage } from './Pages/JournalPage.jsx';
 import { InteractionsPage } from './Pages/InteractionsPage.jsx';
 import { ProfilePage } from './Pages/ProfilePage.jsx';
+import { MedicationForm } from './Pages/MedicationForm.jsx';
+
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import ScatterPlotOutlinedIcon from '@mui/icons-material/ScatterPlotOutlined';
@@ -74,6 +76,7 @@ function App() {
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
         <Route path="/profile" element={<ProfilePage user={userObj} />} />
+        <Route path="/journal/medication-form" element={<MedicationForm />} />
       </Routes>
       
       {/* Navigation Links */}
