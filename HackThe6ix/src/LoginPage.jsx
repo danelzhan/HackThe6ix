@@ -28,7 +28,7 @@ export function LoginPage(user) {
     const navigate = useNavigate();
 
     if (user.user != null) {
-        console.log("Logged In")
+        console.log(user.user)
         navigate("/profile"); 
     }
 
