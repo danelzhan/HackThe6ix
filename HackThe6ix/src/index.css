@@ -241,14 +241,21 @@
     margin: 0;
 }
 
+body {
+    background-color: #111111;
+}
+
 .app {
     width: 25rem;
     border: 1px solid black;
-    height: 92vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #F4F4F4;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #graph_container{
@@ -291,4 +298,91 @@
     display: flex;
     align-items: end;   
     color: #FFFFFF;
+}
+
+#video_container {
+    width: 25rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.camera_text {
+    color: #FFFFFF;
+    height: 100%;
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100vw;
+    pointer-events: "none";
+}
+
+#camera_label {
+    font-size: 32px;
+    text-align: center;
+    max-width: 20rem;
+}
+
+#camera_subtext {
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 50vh;
+}
+
+.manual-input-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 20rem;          /* or adjust as needed */
+  height: 3rem;          /* matches the screenshot */
+  border-radius: 32px;
+  background: #dde2ff;
+  color: #6680ff;
+  font-size: 20px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  font-weight: 400;
+  transition: 0.2s;
+}
+
+.manual-input-btn .arrow {
+  font-size: 1.6em;
+  margin-left: 0.3rem;
+}
+
+.manual-input-btn:active {
+  background: #cfd8ff;
+}
+
+#login_button {
+  width: 300px;
+  height: 56px;
+  background: linear-gradient(90deg, #6680ff 0%, #a0b5ff 100%);
+  color: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(102, 128, 255, 0.08);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  letter-spacing: 0.02em;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#login_button:hover {
+  background: linear-gradient(90deg, #5570dd 0%, #87a1f7 100%);
+  box-shadow: 0 4px 18px rgba(102, 128, 255, 0.15);
+  transform: translateY(-2px) scale(1.01);
 }
