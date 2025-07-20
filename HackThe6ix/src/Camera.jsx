@@ -9,7 +9,7 @@ export function Camera( {updateDrugs, user} ) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [photo, setPhoto] = useState(null);
-  console.log("first" + user)
+  console.log("first", user)
 
   useEffect(() => {
     if (!photo) {
@@ -34,7 +34,7 @@ export function Camera( {updateDrugs, user} ) {
   }, [photo]);
 
     async function capturePhoto(user) {
-      console.log("took pic")
+      console.log("test", user)
       const video = videoRef.current;
       const canvas = canvasRef.current;
       if (video && canvas) {

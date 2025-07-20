@@ -90,7 +90,7 @@ function App() {
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
         <Route path="/profile" element={<ProfilePage user={userObj} />} />
-        <Route path="/camera" element={<AddDrugPage user ={userObj}/>} />
+        <Route path="/camera" element={<AddDrugPage user ={user}/>} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/login" element={<SignupPage user={userObj} />}></Route>
       </Routes>
