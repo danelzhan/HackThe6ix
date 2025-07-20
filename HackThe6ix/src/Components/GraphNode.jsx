@@ -45,7 +45,7 @@ const GraphNode = ({
         return '#C5B6F1'; // Default purple for drugs
       return '#C5B6F1'; // Purple for drugs
     } else {
-      return '#696969ff'; // Grey for food
+      return '#D1FFB8'; // Grey for food
     }
   };
 

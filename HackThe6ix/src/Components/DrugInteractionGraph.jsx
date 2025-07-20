@@ -7,7 +7,6 @@ import GraphEdge from './GraphEdge.jsx';
 import DrugPopup from './DrugPopup.jsx';
 import InteractionPopup from './InteractionPopup.jsx';
 
-
 const DrugInteractionGraph = () => {
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
@@ -377,7 +376,7 @@ const DrugInteractionGraph = () => {
       {/* Legend */}
       <div style={{
         position: 'absolute',
-        bottom: '2rem',
+        top: '1rem',
         left: '1rem',
         backgroundColor: 'white',
         padding: '10px',

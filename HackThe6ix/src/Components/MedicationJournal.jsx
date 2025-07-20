@@ -4,6 +4,7 @@ import DateHeader from './DateHeader';
 import CalendarModal from './CalendarModal';
 import TimeBlock from './TimeBlock';
 import EditButton from './EditButton';
+import DrugPopup from './DrugPopup';
 import { useFetchCurrentUser } from '../Bridge.js';
 import '../App.css';
 import { FiCircle, FiCheck, FiX, FiPlus } from 'react-icons/fi';
@@ -12,9 +13,10 @@ const MedicationJournal = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [journal, setJournal] = useState({});
+  const [journal, setJournal] = useState([]);
   const [loading, setLoading] = useState(true);
   const [drugs, setDrugs] = useState([]);
+  const [drugPopup, setDrugPopup] = useState({ visible: false, drug: null });
   const { fetchCurrentUser, userEmail, isAuthenticated } = useFetchCurrentUser();
 
   // Fetch patient data and organize drugs
@@ -31,8 +33,8 @@ const MedicationJournal = () => {
             setDrugs(drugNodes);
             
             // Organize drugs by time/frequency
-            const organizedJournal = organizeDrugsByTime(drugNodes);
-            setJournal(organizedJournal);
+            const organizedMedications = organizeDrugsByTime(drugNodes);
+            setJournal(organizedMedications);
           }
         } catch (error) {
           console.error('Error fetching patient data:', error);
@@ -48,54 +50,51 @@ const MedicationJournal = () => {
   }, [isAuthenticated, userEmail]);
 
   const organizeDrugsByTime = (drugNodes) => {
-    const timeSlots = {};
+    const allMedications = [];
     
     drugNodes.forEach(drug => {
-      // Parse frequency to determine time slots
-      const times = parseFrequencyToTimes(drug.frequency);
+      // Use the time_taken field directly, or default to 08:00 if not specified
+      const time = drug.time_taken || '08:00';
       
-      times.forEach(time => {
-        if (!timeSlots[time]) {
-          timeSlots[time] = [];
-        }
-        timeSlots[time].push({
-          ...drug,
-          taken: false, // Default to not taken
-          time: time
-        });
+      allMedications.push({
+        ...drug,
+        taken: false, // Default to not taken
+        time: time
       });
     });
     
-    return timeSlots;
+    // Sort by time (HH:MM format)
+    return allMedications.sort((a, b) => a.time.localeCompare(b.time));
   };
 
-  const parseFrequencyToTimes = (frequency) => {
-    if (!frequency) return ['08:00']; // Default time if no frequency specified
-    
-    const freq = frequency.toLowerCase();
-    
-    // Parse common frequency patterns
-    if (freq.includes('once') || freq.includes('1x') || freq.includes('daily')) {
-      return ['08:00'];
-    } else if (freq.includes('twice') || freq.includes('2x') || freq.includes('bid')) {
-      return ['08:00', '20:00'];
-    } else if (freq.includes('three') || freq.includes('3x') || freq.includes('tid')) {
-      return ['08:00', '14:00', '20:00'];
-    } else if (freq.includes('four') || freq.includes('4x') || freq.includes('qid')) {
-      return ['08:00', '12:00', '16:00', '20:00'];
-    } else if (freq.includes('morning')) {
-      return ['08:00'];
-    } else if (freq.includes('evening') || freq.includes('night')) {
-      return ['20:00'];
-    } else if (freq.includes('noon') || freq.includes('lunch')) {
-      return ['12:00'];
-    } else {
-      // Try to extract specific times if mentioned
-      const timeMatches = freq.match(/\d{1,2}:\d{2}/g);
-      if (timeMatches && timeMatches.length > 0) {
-        return timeMatches;
+  // Same color logic as GraphNode.jsx
+  const getMedicationColor = (medication) => {
+    if (medication.din) {
+      // cardiovascular, antibiotic, mental, hormonal, pain, GI, OTC
+      if (medication.category === 'cardiovascular') {
+        return '#7B89FF';
       }
-      return ['08:00']; // Default fallback
+      if (medication.category === 'antibiotic') {
+        return '#FFB8B8';
+      }
+      if (medication.category === 'mental') {
+        return '#B3FEA9';
+      }
+      if (medication.category === 'hormonal') {
+        return '#BAA9FE';
+      }
+      if (medication.category === 'pain') {
+        return '#FED5A9';
+      }
+      if (medication.category === 'gi') {
+        return '#FFFBB8';
+      }
+      if (medication.category === 'otc') {
+        return '#c5c5c5ff';
+      }
+      return '#C5B6F1'; // Default purple for drugs
+    } else {
+      return '#D1FFB8'; // Green for food
     }
   };
 
@@ -107,19 +106,23 @@ const MedicationJournal = () => {
     setEditMode(!editMode);
   };
 
-  const handleMedicationToggle = (time, medicationDin) => {
+  const handleMedicationToggle = (medicationIndex) => {
     setJournal(prevJournal => {
-      const updatedTimeBlock = prevJournal[time].map(med => 
-        med.din === medicationDin 
-          ? { ...med, taken: !med.taken } 
-          : med
-      );
-      
-      return {
-        ...prevJournal,
-        [time]: updatedTimeBlock
+      const updatedJournal = [...prevJournal];
+      updatedJournal[medicationIndex] = {
+        ...updatedJournal[medicationIndex],
+        taken: !updatedJournal[medicationIndex].taken
       };
+      return updatedJournal;
     });
+  };
+
+  const handleDrugClick = (drugNode) => {
+    setDrugPopup({ visible: true, drug: drugNode });
+  };
+
+  const handleCloseDrugPopup = () => {
+    setDrugPopup({ visible: false, drug: null });
   };
 
   if (loading) {
@@ -151,7 +154,7 @@ const MedicationJournal = () => {
         onToggle={toggleEditMode} 
       />
       
-      {Object.keys(journal).length === 0 ? (
+      {journal.length === 0 ? (
         <div style={{
           textAlign: 'center',
           padding: '40px',
@@ -160,17 +163,16 @@ const MedicationJournal = () => {
           No medications found. Add some medications to get started.
         </div>
       ) : (
-        Object.entries(journal)
-          .sort(([timeA], [timeB]) => timeA.localeCompare(timeB))
-          .map(([time, medications]) => (
-            <EnhancedTimeBlock
-              key={time}
-              time={time}
-              medications={medications}
-              editMode={editMode}
-              onMedicationToggle={(medDin) => handleMedicationToggle(time, medDin)}
-            />
-          ))
+        journal.map((medication, index) => (
+          <EnhancedMedicationCard
+            key={`${medication.din}-${medication.time}-${index}`}
+            medication={medication}
+            editMode={editMode}
+            onMedicationToggle={() => handleMedicationToggle(index)}
+            onDrugClick={handleDrugClick}
+            getMedicationColor={getMedicationColor}
+          />
+        ))
       )}
       
       {showCalendar && (
@@ -189,78 +191,70 @@ const MedicationJournal = () => {
             <FiPlus className="add-med" />
         </button>
       </div>
+
+      {/* Drug Popup */}
+      <DrugPopup
+        drugNode={drugPopup.drug}
+        isVisible={drugPopup.visible}
+        onClose={handleCloseDrugPopup}
+      />
     </div>
   );
 };
 
-// Enhanced TimeBlock component with better styling
-const EnhancedTimeBlock = ({ time, medications, onMedicationToggle, editMode }) => {
-  const timeInMinutes = parseInt(time.split(':')[0]) * 60 + parseInt(time.split(':')[1]);
+// Enhanced Medication Card component - displays individual medication with time
+const EnhancedMedicationCard = ({ medication, onMedicationToggle, editMode, onDrugClick, getMedicationColor }) => {
+  const timeInMinutes = parseInt(medication.time.split(':')[0]) * 60 + parseInt(medication.time.split(':')[1]);
   const isCurrentTime = Math.abs(timeInMinutes - (new Date().getHours() * 60 + new Date().getMinutes())) < 30;
+  const medicationColor = getMedicationColor(medication);
+
+  const handleCardClick = () => {
+    if (medication.din) {
+      onDrugClick(medication);
+    }
+  };
 
   return (
     <div style={{
-      marginBottom: '20px',
+      marginBottom: '16px',
       padding: '16px',
-      backgroundColor: isCurrentTime ? '#f0f8ff' : '#fafafa',
+      backgroundColor: medicationColor,
       borderRadius: '12px',
-      border: isCurrentTime ? '2px solid #C5B6F1' : '1px solid #e0e0e0',
-      boxShadow: isCurrentTime ? '0 4px 12px rgba(197, 182, 241, 0.2)' : '0 2px 8px rgba(0,0,0,0.1)'
-    }}>
-      <div style={{
-        fontSize: '18px',
-        fontWeight: 'bold',
-        color: isCurrentTime ? '#7c3aed' : '#333',
-        marginBottom: '12px',
-        display: 'flex',
-        alignItems: 'center'
-      }}>
-        {time}
-        {isCurrentTime && (
-          <span style={{
-            marginLeft: '8px',
-            fontSize: '12px',
-            background: '#C5B6F1',
-            color: 'white',
-            padding: '2px 8px',
-            borderRadius: '12px'
-          }}>
-            Current
-          </span>
-        )}
-      </div>
-      <div style={{ display: 'grid', gap: '8px' }}>
-        {medications.map((med, index) => (
-          <DrugPanel 
-            key={index}
-            medication={med}
-            onToggle={() => onMedicationToggle(time, med.din)}
-            editMode={editMode}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Enhanced Drug Panel component
-const DrugPanel = ({ medication, onToggle, editMode }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  
-  return (
-    <div style={{
-      backgroundColor: 'white',
-      border: `2px solid ${medication.taken ? '#4ade80' : '#C5B6F1'}`,
-      borderRadius: '8px',
-      padding: '12px',
+      border: `2px solid ${medication.taken ? '#4ade80' : (isCurrentTime ? '#8b5cf6' : 'transparent')}`,
+      boxShadow: isCurrentTime ? '0 4px 12px rgba(139, 92, 246, 0.3)' : '0 2px 8px rgba(0,0,0,0.1)',
       transition: 'all 0.2s ease',
       cursor: 'pointer'
     }}
-    onClick={() => setIsExpanded(!isExpanded)}>
+    onClick={handleCardClick}>
+      
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ flex: 1 }}>
+        {/* Time Display */}
+        <div style={{
+          backgroundColor: isCurrentTime ? '#8b5cf6' : 'rgba(0, 0, 0, 0.1)',
+          color: isCurrentTime ? 'white' : '#374151',
+          padding: '8px 12px',
+          borderRadius: '8px',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          minWidth: '70px',
+          textAlign: 'center'
+        }}>
+          {medication.time}
+          {isCurrentTime && (
+            <div style={{
+              fontSize: '10px',
+              marginTop: '2px',
+              opacity: 0.9
+            }}>
+              NOW
+            </div>
+          )}
+        </div>
+        
+        {/* Medication Info */}
+        <div style={{ flex: 1, marginLeft: '16px' }}>
           <div style={{
-            fontSize: '16px',
+            fontSize: '18px',
             fontWeight: 'bold',
             color: '#333',
             marginBottom: '4px'
@@ -269,59 +263,53 @@ const DrugPanel = ({ medication, onToggle, editMode }) => {
           </div>
           <div style={{
             fontSize: '14px',
-            color: '#666',
+            color: '#555',
             marginBottom: '4px'
           }}>
             {medication.dosage} • {medication.frequency}
           </div>
-          {medication.instructions && (
+          {medication.category && (
             <div style={{
               fontSize: '12px',
-              color: '#888',
-              fontStyle: 'italic'
+              color: '#666',
+              fontStyle: 'italic',
+              textTransform: 'capitalize'
             }}>
-              {medication.instructions}
+              {medication.category}
             </div>
           )}
         </div>
         
-        {editMode && (
-          <div style={{ marginLeft: '12px' }}>
+        {/* Status Indicator */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {medication.taken && (
+            <div style={{
+              backgroundColor: '#4ade80',
+              color: 'white',
+              padding: '4px 8px',
+              borderRadius: '12px',
+              fontSize: '12px',
+              fontWeight: 'bold'
+            }}>
+              TAKEN
+            </div>
+          )}
+          
+          {editMode && (
             <input
               type="checkbox"
               checked={medication.taken || false}
-              onChange={onToggle}
+              onChange={onMedicationToggle}
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: '20px',
                 height: '20px',
-                accentColor: '#C5B6F1'
+                accentColor: '#8b5cf6'
               }}
             />
-          </div>
-        )}
-      </div>
-      
-      {isExpanded && (
-        <div style={{
-          marginTop: '12px',
-          padding: '12px',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '6px',
-          fontSize: '14px',
-          color: '#555'
-        }}>
-          <div><strong>DIN:</strong> {medication.din}</div>
-          <div><strong>Strength:</strong> {medication.strength || 'Not specified'}</div>
-          <div><strong>Route:</strong> {medication.route || 'Oral'}</div>
-          {medication.side_effects && (
-            <div><strong>Common Side Effects:</strong> {medication.side_effects}</div>
-          )}
-          {medication.food_instructions && (
-            <div><strong>Food Instructions:</strong> {medication.food_instructions}</div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
