@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "d3": "^7.9.0",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.525.0",
     "react-calendar": "^6.0.0",
