@@ -129,6 +129,7 @@ export function MedicationForm() {
   };
 
   return (
+    <div className="app">
     <div style={containerStyle}>
       <div style={cardStyle}>
         {/* Header */}
@@ -438,6 +439,7 @@ export function MedicationForm() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

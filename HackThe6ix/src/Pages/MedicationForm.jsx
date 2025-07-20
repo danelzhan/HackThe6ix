@@ -30,6 +30,7 @@ export function MedicationForm() {
   };
 
   return (
+    <div className="app">
     <div className="journal-container medication-form">
     <form onSubmit={handleSubmit} >
         <div className="form-header">
@@ -149,6 +150,7 @@ export function MedicationForm() {
         </button>
       </form>
 
+    </div>
     </div>
   );
 }
