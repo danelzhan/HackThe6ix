@@ -93,6 +93,7 @@ function App() {
         <Route path="/camera" element={<AddDrugPage user ={user}/>} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/login" element={<SignupPage user={userObj} />}></Route>
+        <Route path="/journal/medication-form" element={<MedicationForm />} />
       </Routes>
       
     {showNavBar && (
