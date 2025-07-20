@@ -363,7 +363,7 @@ const DrugInteractionGraph = () => {
         </div>
       )}
 
-      {/* Legend */}
+      {/* Severity Legend */}
       <div style={{
         position: 'absolute',
         top: '1rem',
@@ -374,6 +374,7 @@ const DrugInteractionGraph = () => {
         boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
         zIndex: 50
       }}>
+        <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '14px' }}>Interaction Severity</div>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
           <FaExclamationTriangle color="red" style={{ marginRight: '5px' }} />
           <span>Severe</span>
@@ -385,6 +386,56 @@ const DrugInteractionGraph = () => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <FaCheckCircle color="green" style={{ marginRight: '5px' }} />
           <span>Mild</span>
+        </div>
+      </div>
+
+      {/* Drug Categories Legend */}
+      <div style={{
+        position: 'absolute',
+        top: '1rem',
+        right: '1rem',
+        backgroundColor: 'white',
+        padding: '10px',
+        borderRadius: '5px',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+        zIndex: 50
+      }}>
+        <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '14px' }}>Drug Categories</div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#7B89FF', marginRight: '8px' }}></div>
+          <span>Cardiovascular</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FFB8B8', marginRight: '8px' }}></div>
+          <span>Antibiotic</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#B3FEA9', marginRight: '8px' }}></div>
+          <span>Mental Health</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#BAA9FE', marginRight: '8px' }}></div>
+          <span>Hormonal</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FED5A9', marginRight: '8px' }}></div>
+          <span>Pain Management</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#FFFBB8', marginRight: '8px' }}></div>
+          <span>Gastrointestinal</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#c5c5c5', marginRight: '8px' }}></div>
+          <span>Over-the-Counter</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#C5B6F1', marginRight: '8px' }}></div>
+          <span>Other Drugs</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#D1FFB8', marginRight: '8px' }}></div>
+          <span>Food</span>
         </div>
       </div>
 
