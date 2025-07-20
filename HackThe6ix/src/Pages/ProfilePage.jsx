@@ -6,30 +6,27 @@ import { MedicationSection } from '../Components/MedicationSection';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 
 
-export function ProfilePage(user) {
+export function ProfilePage({user}) {
 
     console.log(user)
 
     if (user.user == null) {
-        console.log("noUser")
         return (
-            <div id='ProfileLoginButton'>
-                <LoginButton />
-            </div>
+            <LoginButton />
         )
-    }
-
+    } else {
     return (
         <div className="app">
+
             <ProfileHeader name={user.user.name} />
-            <div>
-                <MedicationSection user={user} />
-                <Link to="/camera">Add more</Link>
-            </div>
-           
             <LogoutButton />
             
 
         </div>
     );
+    }
+
+    
+
+
 }
