@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export function LoginPage(user) {
 
+    const navigate = useNavigate();
+
     if (user.user != null) {
         console.log("Logged In")
         navigate("/profile"); 
