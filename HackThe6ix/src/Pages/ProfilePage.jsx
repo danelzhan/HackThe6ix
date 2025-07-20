@@ -21,9 +21,10 @@ export function ProfilePage({user}) {
         <div className="app profile-component">
 
             <ProfileHeader name={user.name} />
-            < button className="profile-button" onClick={() => {navigate("/camera")}}>Add more</button>
-            <LogoutButton/>
-           
+            <button id="add_more_b" onClick={() => {navigate("/camera")}}>Add more</button>
+            <button id="add_more_b" >Remove</button>
+            <LogoutButton />
+            
 
         </div>
     );

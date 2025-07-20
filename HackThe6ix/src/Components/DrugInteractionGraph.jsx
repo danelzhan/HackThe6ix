@@ -50,26 +50,7 @@ const DrugInteractionGraph = () => {
     fetchPatientData();
   }, [isAuthenticated, userEmail]);
 
-  // Helper function to map backend severity to standardized severity
-  const mapSeverityToStandard = (severity) => {
-    switch (severity?.toLowerCase()) {
-      case 'major':
-      case 'severe':
-      case 'dangerous':
-        return 'severe';
-      case 'moderate':
-      case 'medium':
-      case 'caution':
-        return 'moderate';
-      case 'mild':
-      case 'minor':
-      case 'safe':
-      default:
-        return 'mild';
-    }
-  };
-
-  // Process interactions for D3 format
+    // Process interactions for D3 format
   const generateInteractions = useCallback(() => {
     const networkInteractions = [];
     
@@ -89,7 +70,7 @@ const DrugInteractionGraph = () => {
             id: `edge-${index}`,
             source: sourceIndex,
             target: targetIndex,
-            severity: mapSeverityToStandard(interaction.severity),
+            severity: interaction.severity || 'mild', // Use backend severity directly with fallback
             description: interaction.advanced_info || `${interaction.interaction_type} interaction`,
             interaction_type: interaction.interaction_type,
             originalIndex: index // Store the original interaction index
@@ -106,7 +87,7 @@ const DrugInteractionGraph = () => {
             id: `edge-${index}`,
             source: drugIndex,
             target: foodIndex,
-            severity: mapSeverityToStandard(interaction.severity),
+            severity: interaction.severity || 'mild', // Use backend severity directly with fallback
             description: interaction.advanced_info || `${interaction.interaction_type} interaction`,
             interaction_type: interaction.interaction_type,
             originalIndex: index // Store the original interaction index
@@ -177,9 +158,16 @@ const DrugInteractionGraph = () => {
   }, []);
 
   const handleEdgeClick = useCallback((edge) => {
+    console.log('Edge clicked:', edge);
+    console.log('Original index:', edge.originalIndex);
+    console.log('Available interactions:', interactions);
+    
     // Use the originalIndex to get the backend interaction data
     if (edge.originalIndex !== undefined && interactions[edge.originalIndex]) {
+      console.log('Setting interaction popup visible with:', interactions[edge.originalIndex]);
       setInteractionPopup({ visible: true, interaction: interactions[edge.originalIndex] });
+    } else {
+      console.log('No interaction found for edge:', edge);
     }
   }, [interactions]);
 
@@ -360,13 +348,15 @@ const DrugInteractionGraph = () => {
           top: tooltip.y,
           backgroundColor: 'white',
           padding: '10px',
-          border: '1px solid #ddd',
-          borderRadius: '4px',
+          borderRadius: '10px',
           boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
           zIndex: 100,
           maxWidth: '300px',
           pointerEvents: 'none'
         }}>
+          <div style={{ color: '#666', fontSize: '12px', marginBottom: '5px' }}>
+            Click to expand
+          </div>
           {tooltip.content.split('\n').map((line, i) => (
             <div key={i}>{line}</div>
           ))}
@@ -406,6 +396,7 @@ const DrugInteractionGraph = () => {
       />
 
       {/* Interaction Popup */}
+      {console.log('Rendering InteractionPopup with:', interactionPopup)}
       <InteractionPopup
         interaction={interactionPopup.interaction}
         isVisible={interactionPopup.visible}

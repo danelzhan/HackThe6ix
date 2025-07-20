@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {main} from "./DrugScanParse.js"
 import { height } from "@mui/system";
 import ManualInputButton from "./Components/Button.jsx";
@@ -9,6 +10,7 @@ export function Camera( {updateDrugs, user} ) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [photo, setPhoto] = useState(null);
+  const navigate = useNavigate();
   console.log("first", user)
 
   useEffect(() => {
@@ -69,6 +71,14 @@ export function Camera( {updateDrugs, user} ) {
           <p id="camera_label">Scan the label on your medication</p>
           <p id="camera_subtext">Tap anywhere to take a photo</p>
         </div>
+        <ManualInputButton 
+          onClick={() => {
+            console.log("Manual input clicked - redirecting to profile");
+            navigate('/profile');
+          }} 
+          label={"Manually input info instead"} 
+          style={{ pointerEvents: "auto" }}
+        />
       </div>
 
       <div id="video_container">
