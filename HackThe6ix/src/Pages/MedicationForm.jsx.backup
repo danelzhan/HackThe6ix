@@ -2,8 +2,34 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './MedicationForm.css';
 import { FiX, FiCheck, FiCalendar, FiPill, FiClock, FiUser, FiFileText } from 'react-icons/fi';
+
+export function MedicationForm() {
+  const navigate = useNavigate();
+  const [medicationName, setMedicationName] = useState('');
+  const [din, setDin] = useState('');
+  const [category, setCategory] = useState('');
+  const [dosageForm, setDosageForm] = useState('');
+  const [frequency, setFrequency] = useState(1);
+  const [startDate, setStartDate] = useState(new Date());
+  const [currentlyTaking, setCurrentlyTaking] = useState(true);
+  const [notes, setNotes] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      medicationName,
+      din,
+      category,
+      dosageForm,
+      frequency,
+      startDate,
+      currentlyTaking,
+      notes
+    };
+    console.log('Form submitted:', data);
+    //!! TODO: send to backend
+  };
 
 export function MedicationForm() {
   const navigate = useNavigate();
@@ -41,44 +67,6 @@ export function MedicationForm() {
     navigate('/journal');
   };
 
-  const containerStyle = {
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%)',
-    padding: '20px'
-  };
-
-  const cardStyle = {
-    maxWidth: '600px',
-    margin: '0 auto',
-    backgroundColor: 'white',
-    borderRadius: '20px',
-    boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-    overflow: 'hidden'
-  };
-
-  const headerStyle = {
-    background: 'linear-gradient(135deg, #C5B6F1 0%, #9f7aea 100%)',
-    padding: '24px',
-    color: 'white',
-    position: 'relative'
-  };
-
-  const closeButtonStyle = {
-    position: 'absolute',
-    top: '24px',
-    left: '24px',
-    background: 'rgba(255, 255, 255, 0.2)',
-    border: 'none',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease'
-  };
-
   const inputStyle = {
     width: '100%',
     padding: '16px 20px',
@@ -90,11 +78,11 @@ export function MedicationForm() {
     outline: 'none'
   };
 
-  const sectionStyle = {
-    padding: '24px',
-    backgroundColor: '#f8fafc',
-    borderRadius: '16px',
-    border: '1px solid #e5e7eb'
+  const focusStyle = {
+    ...inputStyle,
+    borderColor: '#C5B6F1',
+    backgroundColor: 'white',
+    boxShadow: '0 0 0 3px rgba(197, 182, 241, 0.1)'
   };
 
   const labelStyle = {
@@ -108,35 +96,44 @@ export function MedicationForm() {
     gap: '8px'
   };
 
-  const submitButtonStyle = {
-    width: '100%',
-    padding: '18px',
-    background: isSubmitting 
-      ? 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)'
-      : 'linear-gradient(135deg, #C5B6F1 0%, #9f7aea 100%)',
-    color: 'white',
-    border: 'none',
-    borderRadius: '12px',
-    fontSize: '18px',
-    fontWeight: '600',
-    cursor: isSubmitting ? 'not-allowed' : 'pointer',
-    transition: 'all 0.2s ease',
-    boxShadow: '0 4px 14px 0 rgba(197, 182, 241, 0.39)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '8px',
-    marginTop: '8px'
-  };
-
   return (
-    <div style={containerStyle} className="medication-form-container">
-      <div style={cardStyle} className="medication-form-card">
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%)',
+      padding: '20px'
+    }}>
+      <div style={{
+        maxWidth: '600px',
+        margin: '0 auto',
+        backgroundColor: 'white',
+        borderRadius: '20px',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        overflow: 'hidden'
+      }}>
         {/* Header */}
-        <div style={headerStyle}>
+        <div style={{
+          background: 'linear-gradient(135deg, #C5B6F1 0%, #9f7aea 100%)',
+          padding: '24px',
+          color: 'white',
+          position: 'relative'
+        }}>
           <button 
             onClick={() => navigate('/journal')}
-            style={closeButtonStyle}
+            style={{
+              position: 'absolute',
+              top: '24px',
+              left: '24px',
+              background: 'rgba(255, 255, 255, 0.2)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
             onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
             onMouseLeave={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
           >
@@ -168,7 +165,12 @@ export function MedicationForm() {
           <div style={{ display: 'grid', gap: '24px' }}>
             
             {/* Medication Info Section */}
-            <div style={sectionStyle}>
+            <div style={{
+              padding: '24px',
+              backgroundColor: '#f8fafc',
+              borderRadius: '16px',
+              border: '1px solid #e5e7eb'
+            }}>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -195,6 +197,8 @@ export function MedicationForm() {
                     onChange={(e) => setMedicationName(e.target.value)}
                     required
                     style={inputStyle}
+                    onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                    onBlur={(e) => Object.assign(e.target.style, inputStyle)}
                   />
                 </div>
                 
@@ -208,13 +212,20 @@ export function MedicationForm() {
                     value={din}
                     onChange={(e) => setDin(e.target.value)}
                     style={inputStyle}
+                    onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                    onBlur={(e) => Object.assign(e.target.style, inputStyle)}
                   />
                 </div>
               </div>
             </div>
 
             {/* Category & Form Section */}
-            <div style={sectionStyle}>
+            <div style={{
+              padding: '24px',
+              backgroundColor: '#f8fafc',
+              borderRadius: '16px',
+              border: '1px solid #e5e7eb'
+            }}>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -228,7 +239,7 @@ export function MedicationForm() {
                 Classification
               </h3>
               
-              <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr' }} className="medication-form-grid">
+              <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr' }}>
                 <div>
                   <label style={labelStyle}>Category *</label>
                   <select
@@ -239,6 +250,8 @@ export function MedicationForm() {
                       ...inputStyle,
                       cursor: 'pointer'
                     }}
+                    onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                    onBlur={(e) => Object.assign(e.target.style, inputStyle)}
                   >
                     <option value="">Select category</option>
                     <option value="antibiotic">🦠 Antibiotic/Antivirals</option>
@@ -260,6 +273,8 @@ export function MedicationForm() {
                       ...inputStyle,
                       cursor: 'pointer'
                     }}
+                    onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                    onBlur={(e) => Object.assign(e.target.style, inputStyle)}
                   >
                     <option value="">Select form</option>
                     <option value="tablet">💊 Tablet</option>
@@ -274,7 +289,12 @@ export function MedicationForm() {
             </div>
 
             {/* Schedule Section */}
-            <div style={sectionStyle}>
+            <div style={{
+              padding: '24px',
+              backgroundColor: '#f8fafc',
+              borderRadius: '16px',
+              border: '1px solid #e5e7eb'
+            }}>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: '600',
@@ -334,19 +354,31 @@ export function MedicationForm() {
                     <FiCalendar size={16} />
                     Start Date *
                   </label>
-                  <DatePicker
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    required
-                    dateFormat="MMMM d, yyyy"
-                    style={inputStyle}
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      required
+                      dateFormat="MMMM d, yyyy"
+                      style={{
+                        ...inputStyle,
+                        cursor: 'pointer'
+                      }}
+                      wrapperStyle={{ width: '100%' }}
+                      calendarClassName="custom-datepicker"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Status & Notes */}
-            <div style={sectionStyle}>
+            <div style={{
+              padding: '24px',
+              backgroundColor: '#f8fafc',
+              borderRadius: '16px',
+              border: '1px solid #e5e7eb'
+            }}>
               <div style={{ marginBottom: '20px' }}>
                 <label style={{
                   display: 'flex',
@@ -395,6 +427,8 @@ export function MedicationForm() {
                     resize: 'vertical',
                     minHeight: '100px'
                   }}
+                  onFocus={(e) => Object.assign(e.target.style, focusStyle)}
+                  onBlur={(e) => Object.assign(e.target.style, inputStyle)}
                 />
               </div>
             </div>
@@ -403,8 +437,26 @@ export function MedicationForm() {
             <button 
               type="submit" 
               disabled={isSubmitting}
-              style={submitButtonStyle}
-              className="submit-button"
+              style={{
+                width: '100%',
+                padding: '18px',
+                background: isSubmitting 
+                  ? 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)'
+                  : 'linear-gradient(135deg, #C5B6F1 0%, #9f7aea 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '18px',
+                fontWeight: '600',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 4px 14px 0 rgba(197, 182, 241, 0.39)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                marginTop: '8px'
+              }}
               onMouseEnter={(e) => {
                 if (!isSubmitting) {
                   e.target.style.transform = 'translateY(-2px)';
@@ -425,8 +477,9 @@ export function MedicationForm() {
                     height: '20px',
                     border: '2px solid #ffffff',
                     borderTop: '2px solid transparent',
-                    borderRadius: '50%'
-                  }} className="spinner" />
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
                   Saving...
                 </>
               ) : (
@@ -439,6 +492,38 @@ export function MedicationForm() {
           </div>
         </form>
       </div>
+      
+      {/* Add spinning animation */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          
+          .custom-datepicker {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+          }
+          
+          .react-datepicker__input-container input {
+            width: 100% !important;
+            padding: 16px 20px !important;
+            border: 2px solid #e5e7eb !important;
+            border-radius: 12px !important;
+            font-size: 16px !important;
+            background-color: #fafafa !important;
+            outline: none !important;
+          }
+          
+          .react-datepicker__input-container input:focus {
+            border-color: #C5B6F1 !important;
+            background-color: white !important;
+            box-shadow: 0 0 0 3px rgba(197, 182, 241, 0.1) !important;
+          }
+        `}
+      </style>
     </div>
   );
 }

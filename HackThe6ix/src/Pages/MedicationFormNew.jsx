@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './MedicationForm.css';
 import { FiX, FiCheck, FiCalendar, FiPill, FiClock, FiUser, FiFileText } from 'react-icons/fi';
 
 export function MedicationForm() {
@@ -130,8 +129,8 @@ export function MedicationForm() {
   };
 
   return (
-    <div style={containerStyle} className="medication-form-container">
-      <div style={cardStyle} className="medication-form-card">
+    <div style={containerStyle}>
+      <div style={cardStyle}>
         {/* Header */}
         <div style={headerStyle}>
           <button 
@@ -228,7 +227,7 @@ export function MedicationForm() {
                 Classification
               </h3>
               
-              <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr' }} className="medication-form-grid">
+              <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: '1fr 1fr' }}>
                 <div>
                   <label style={labelStyle}>Category *</label>
                   <select
@@ -404,7 +403,6 @@ export function MedicationForm() {
               type="submit" 
               disabled={isSubmitting}
               style={submitButtonStyle}
-              className="submit-button"
               onMouseEnter={(e) => {
                 if (!isSubmitting) {
                   e.target.style.transform = 'translateY(-2px)';
@@ -425,8 +423,9 @@ export function MedicationForm() {
                     height: '20px',
                     border: '2px solid #ffffff',
                     borderTop: '2px solid transparent',
-                    borderRadius: '50%'
-                  }} className="spinner" />
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
                   Saving...
                 </>
               ) : (
