@@ -34,6 +34,7 @@ client = MongoClient(uri, server_api=ServerApi('1'))
 #             "dosage": String,
 #             "frequency": String,
 #             "category": String,
+#             "ingredient": String,
 #             "time_taken": String, # format: "HH:MM" (24-hour format)
 #             "start_date": String, # format: "YYYY-MM-DD"
 #             "end_date": String, # format: "YYYY-MM-DD"
