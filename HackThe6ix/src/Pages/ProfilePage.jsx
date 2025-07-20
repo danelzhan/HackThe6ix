@@ -13,8 +13,9 @@ export function ProfilePage({user}) {
     console.log(user)
 
     if (user == null) {
-        return (
-            <LoginButton />
+        
+        return (<div className="app">
+            <LoginButton /></div>
         )
     } else {
     return (

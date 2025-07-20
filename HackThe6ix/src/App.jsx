@@ -83,7 +83,7 @@ function App() {
   }, [isAuthenticated, user]);
 
   return (
-    <div className="app">
+    <> 
       {/* Routing */}
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -125,7 +125,7 @@ function App() {
           </nav>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
