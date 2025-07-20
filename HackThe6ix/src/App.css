@@ -1,11 +1,61 @@
-/* Home */
-.journal-snippet {
-    display: flex;
-    justify-content: space-between;
+.journal-snippet-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
+.select-space {
+    margin-bottom: 2rem;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
+}
 
+a {
+    text-decoration: none;
+}
 /* Form Data */
+
+.medication-form{
+    background-color: rgb(238, 238, 238);
+}
+
+input, select, textarea {
+  width: 100%; /* Fix 200px limit */
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border 0.3s ease;
+
+  padding: 10px;
+  margin: 10px 0;
+
+  width: 200px;
+}
+
+textarea{
+    width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(71, 92, 255, 1);
+  box-shadow: 0 0 0 2px rgba(71, 92, 255, 0.2);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
 
 .form-button {
     
@@ -22,7 +72,7 @@
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     margin-top: 20px;
-            
+    margin-bottom:70px;
 }
 
 .checkbox-container {
@@ -58,17 +108,11 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  
+  margin-top: 200px;
   border-bottom: 1px solid grey;
 }
 
-input {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 200px;
-    transition: border-color 0.3s ease;
-}
 
 /* Journal container */
 .journal-container, .component-container {
@@ -170,6 +214,7 @@ input {
   cursor: pointer;
   margin: 10px;
 }
+
 
 
 /* Calendar modal */
