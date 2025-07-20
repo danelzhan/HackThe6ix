@@ -5,6 +5,7 @@ import { useFetchCurrentUser } from '../Bridge.js';
 import GraphNode from './GraphNode.jsx';
 import GraphEdge from './GraphEdge.jsx';
 import DrugPopup from './DrugPopup.jsx';
+import InteractionPopup from './InteractionPopup.jsx';
 
 
 const DrugInteractionGraph = () => {
@@ -24,6 +25,7 @@ const DrugInteractionGraph = () => {
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [forceUpdate, setForceUpdate] = useState(0);
   const [drugPopup, setDrugPopup] = useState({ visible: false, drug: null });
+  const [interactionPopup, setInteractionPopup] = useState({ visible: false, interaction: null });
   const { fetchCurrentUser, userEmail, isAuthenticated } = useFetchCurrentUser();
 
   // Fetch real interactions and nodes from backend
@@ -90,7 +92,8 @@ const DrugInteractionGraph = () => {
             target: targetIndex,
             severity: mapSeverityToStandard(interaction.severity),
             description: interaction.advanced_info || `${interaction.interaction_type} interaction`,
-            interaction_type: interaction.interaction_type
+            interaction_type: interaction.interaction_type,
+            originalIndex: index // Store the original interaction index
           });
         }
       }
@@ -106,7 +109,8 @@ const DrugInteractionGraph = () => {
             target: foodIndex,
             severity: mapSeverityToStandard(interaction.severity),
             description: interaction.advanced_info || `${interaction.interaction_type} interaction`,
-            interaction_type: interaction.interaction_type
+            interaction_type: interaction.interaction_type,
+            originalIndex: index // Store the original interaction index
           });
         }
       }
@@ -160,6 +164,7 @@ const DrugInteractionGraph = () => {
     setHighlightedEdges(new Set());
     setTooltip(prev => ({ ...prev, visible: false }));
     setDrugPopup({ visible: false, drug: null });
+    setInteractionPopup({ visible: false, interaction: null });
   }, []);
 
   const handleDrugClick = useCallback((drugNode) => {
@@ -170,6 +175,17 @@ const DrugInteractionGraph = () => {
 
   const handleClosePopup = useCallback(() => {
     setDrugPopup({ visible: false, drug: null });
+  }, []);
+
+  const handleEdgeClick = useCallback((edge) => {
+    // Use the originalIndex to get the backend interaction data
+    if (edge.originalIndex !== undefined && interactions[edge.originalIndex]) {
+      setInteractionPopup({ visible: true, interaction: interactions[edge.originalIndex] });
+    }
+  }, [interactions]);
+
+  const handleCloseInteractionPopup = useCallback(() => {
+    setInteractionPopup({ visible: false, interaction: null });
   }, []);
 
   // Drag handling functions
@@ -308,6 +324,7 @@ const DrugInteractionGraph = () => {
               targetX={targetNode.x}
               targetY={targetNode.y}
               isHighlighted={highlightedEdges.has(edge.id)}
+              onEdgeClick={handleEdgeClick}
             />
           );
         })}
@@ -387,6 +404,13 @@ const DrugInteractionGraph = () => {
         drugNode={drugPopup.drug}
         isVisible={drugPopup.visible}
         onClose={handleClosePopup}
+      />
+
+      {/* Interaction Popup */}
+      <InteractionPopup
+        interaction={interactionPopup.interaction}
+        isVisible={interactionPopup.visible}
+        onClose={handleCloseInteractionPopup}
       />
     </div>
   );

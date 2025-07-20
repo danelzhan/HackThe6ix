@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GraphEdge = ({ edge, sourceX, sourceY, targetX, targetY, isHighlighted }) => {
+const GraphEdge = ({ edge, sourceX, sourceY, targetX, targetY, isHighlighted, onEdgeClick }) => {
   const getInteractionColor = (severity) => {
     switch (severity) {
       case 'severe': return 'red';
@@ -27,8 +27,19 @@ const GraphEdge = ({ edge, sourceX, sourceY, targetX, targetY, isHighlighted }) 
   const midY = (sourceY + targetY) / 2;
 
   return (
-    <g>
-      {/* Edge line */}
+    <g onClick={() => onEdgeClick && onEdgeClick(edge)} style={{ cursor: onEdgeClick ? 'pointer' : 'default' }}>
+      {/* Invisible wider line for easier clicking */}
+      <line
+        x1={sourceX}
+        y1={sourceY}
+        x2={targetX}
+        y2={targetY}
+        stroke="transparent"
+        strokeWidth="10"
+        style={{ cursor: onEdgeClick ? 'pointer' : 'default' }}
+      />
+      
+      {/* Visible edge line */}
       <line
         x1={sourceX}
         y1={sourceY}
@@ -37,6 +48,7 @@ const GraphEdge = ({ edge, sourceX, sourceY, targetX, targetY, isHighlighted }) 
         stroke={color}
         strokeWidth={strokeWidth}
         opacity={0.8}
+        style={{ pointerEvents: 'none' }} // Let the wider invisible line handle clicks
       />
       
       {/* Label background */}

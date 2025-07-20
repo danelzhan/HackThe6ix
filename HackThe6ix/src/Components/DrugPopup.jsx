@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFetchCurrentUser } from '../Bridge.js';
+import InteractionPopup from './InteractionPopup.jsx';
 
 const DrugPopup = ({ drugNode, isVisible, onClose }) => {
   console.log('DrugPopup rendered:', { drugNode, isVisible });
@@ -7,6 +8,8 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedInteraction, setSelectedInteraction] = useState(null);
+  const [interactionPopupVisible, setInteractionPopupVisible] = useState(false);
   const { fetchCurrentUser, userEmail, isAuthenticated } = useFetchCurrentUser();
   
   useEffect(() => {
@@ -104,6 +107,16 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
 
   const getInteractionTypeIcon = (type) => {
     return type === 'drug-drug' ? '💊' : '🍎';
+  };
+
+  const handleInteractionClick = (interaction) => {
+    setSelectedInteraction(interaction);
+    setInteractionPopupVisible(true);
+  };
+
+  const handleInteractionPopupClose = () => {
+    setInteractionPopupVisible(false);
+    setSelectedInteraction(null);
   };
 
   if (!shouldRender || !drugNode) return null;
@@ -404,6 +417,7 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
                           transition: 'all 0.2s ease',
                           cursor: 'pointer'
                         }}
+                        onClick={() => handleInteractionClick(interaction)}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'translateY(-1px)';
                           e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
@@ -550,6 +564,13 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
           </div>
         </div>
       </div>
+      
+      {/* Interaction Detail Popup */}
+      <InteractionPopup
+        interaction={selectedInteraction}
+        isVisible={interactionPopupVisible}
+        onClose={handleInteractionPopupClose}
+      />
       
       {/* Add spinner animation */}
       <style>
