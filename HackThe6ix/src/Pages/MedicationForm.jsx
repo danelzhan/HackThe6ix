@@ -30,122 +30,125 @@ export function MedicationForm() {
   };
 
   return (
-    <div className="journal-container">
-    <form onSubmit={handleSubmit} className="p-4 space-y-4 bg-white max-w-md mx-auto rounded-xl shadow">
-      
-      <div className="form-header">
-        <button className="invisi-button" onClick={() => window.location.href = '/journal'}>
-          <FiX size={24} />
-        </button>
-        <h2 className="text-xl font-semibold text-center">Upload Medication</h2>
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Medication Name *"
-          value={medicationName}
-          onChange={(e) => setMedicationName(e.target.value)}
-          required
-          className="w-full p-3 border rounded-lg"
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Drug ID Number (DIN)"
-          value={din}
-          onChange={(e) => setDin(e.target.value)}
-          className="w-full p-3 mt-2 border rounded-lg"
-        />
-      </div>
-
-      <div>
-
-        <label className="form-label block mb-1 font-medium">Category <span className="red">*</span></label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-          className="w-full p-3 border rounded-lg"
-        >
-          <option value="">Type</option>
-          <option value="antibiotic">Antibiotic/Antivirals</option>
-          <option value="cardiovascular">Cardiovascular</option>
-          <option value="hormonal">Hormonal/Endocrine</option>
-          <option value="gi">GI/Respiratory</option>
-          <option value="mental">Mental Health</option>
-          <option value="otc">OTC/Supplements</option>
-          <option value="pain">Pain/Inflammation</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="form-label block mb-1 font-medium">Dosage Form</label>
-        <select
-          value={dosageForm}
-          onChange={(e) => setDosageForm(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-        >
-          <option value="">Form</option>
-          <option value="tablet">Tablet</option>
-          <option value="capsule">Capsule</option>
-          <option value="liquid">Liquid</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="form-label block mb-1 font-medium">Frequency</label>
-        <div className="flex items-center gap-2">
-          <input
-            type="number"
-            min="1"
-            value={frequency}
-            onChange={(e) => setFrequency(e.target.value)}
-            className="w-20 p-3 border rounded-lg"
-          />
-          <label className="form-trailing-label">times / day</label>
+    <div className="journal-container medication-form">
+    <form onSubmit={handleSubmit} >
+        <div className="form-header">
+          <button className="invisi-button" onClick={() => window.location.href = '/journal'}>
+            <FiX size={24} />
+          </button>
+          <h2 className="text-xl font-semibold text-center">Upload Medication</h2>
         </div>
-      </div>
 
-      <div>
-        <label className="form-label block mb-1 font-medium">Start <span className="red">*</span></label>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          className="w-full p-3 border rounded-lg"
-          required
-        />
-      </div>
-
-      <div className="checkbox-container">
-        <label className="checkbox-label">
+        {/* Medication Name + DIN */}
+        <div className="space-y-2">
           <input
-            type="checkbox"
-            checked={currentlyTaking}
-            onChange={() => setCurrentlyTaking(!currentlyTaking)}
-            className="mr-2"
+            type="text"
+            placeholder="Medication Name *"
+            value={medicationName}
+            onChange={(e) => setMedicationName(e.target.value)}
+            required
+            className="w-full p-3 border rounded-lg"
           />
-          Currently taking this medication
-        </label>
-      </div>
+          <input
+            type="text"
+            placeholder="Drug ID Number (DIN)"
+            value={din}
+            onChange={(e) => setDin(e.target.value)}
+            className="w-full p-3 border rounded-lg"
+          />
+        </div>
 
+        {/* Category */}
+        <div className="select-space">
+          <label className="form-label">Category <span className="red">*</span></label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+            className="w-full p-3 border rounded-lg"
+          >
+            <option value="">Type</option>
+            <option value="antibiotic">Antibiotic/Antivirals</option>
+            <option value="cardiovascular">Cardiovascular</option>
+            <option value="hormonal">Hormonal/Endocrine</option>
+            <option value="gi">GI/Respiratory</option>
+            <option value="mental">Mental Health</option>
+            <option value="otc">OTC/Supplements</option>
+            <option value="pain">Pain/Inflammation</option>
+          </select>
+        </div>
 
-      <div>
-        <textarea
-          placeholder="Notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-          rows={3}
-        />
-      </div>
+        {/* Dosage Form */}
+        <div className="select-space">
+          <label className="form-label">Dosage Form</label>
+          <select
+            value={dosageForm}
+            onChange={(e) => setDosageForm(e.target.value)}
+            className="w-full p-3 border rounded-lg"
+          >
+            <option value="">Form</option>
+            <option value="tablet">Tablet</option>
+            <option value="capsule">Capsule</option>
+            <option value="liquid">Liquid</option>
+          </select>
+        </div>
 
-      <button
-        type="submit"
-        className="form-button"
-      >
-        Complete and Upload
-      </button>
-    </form>
+        {/* Frequency */}
+        <div className="select-space">
+          <label className="form-label">Frequency</label>
+          <div className="flex items-center gap-2">
+            <input
+              type="number"
+              min="1"
+              value={frequency}
+              onChange={(e) => setFrequency(e.target.value)}
+              className="w-24 p-3 border rounded-lg"
+            />
+            <label className="form-trailing-label">times / day</label>
+          </div>
+        </div>
+
+        {/* Start Date */}
+        <div className="select-space">
+          <label className="form-label">Start <span className="red">*</span></label>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            className="w-full p-3 border rounded-lg"
+            required
+          />
+        </div>
+
+        {/* Checkbox */}
+        <div className="select-space">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={currentlyTaking}
+              onChange={() => setCurrentlyTaking(!currentlyTaking)}
+              className="mr-2"
+            />
+            Currently taking this medication
+          </label>
+        </div>
+
+        {/* Notes */}
+        <div className="space-y-2">
+          <textarea
+            placeholder="Notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="w-full p-3 border rounded-lg"
+            rows={3}
+          />
+        </div>
+
+        {/* Submit */}
+        <button type="submit" className="form-button">
+          Complete and Upload
+        </button>
+      </form>
+
     </div>
   );
 }
