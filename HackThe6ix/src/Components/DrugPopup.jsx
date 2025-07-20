@@ -477,6 +477,15 @@ const DrugPopup = ({ drugNode, isVisible, onClose }) => {
                             }}>
                               Food/Substance Interaction
                             </div>
+                          )}{interaction.type === 'drug-drug' && (
+                            <div style={{
+                              fontSize: '11px',
+                              color: severityStyle.text,
+                              marginTop: '4px',
+                              opacity: 0.8
+                            }}>
+                              Drug to Drug Interaction
+                            </div>
                           )}
                         </div>
                       );
