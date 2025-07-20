@@ -12,7 +12,7 @@
     cursor: pointer;
 }
 
-.date-header {
+.gradient-header {
   background: linear-gradient(
     90deg,  
     rgba(157, 167, 255, 1) 0%, 
@@ -25,6 +25,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding: 50px;
+  border-radius: 10px;
 }
 
 .date-display {
@@ -39,7 +40,8 @@
 /* Time blocks */
 .time-block {
   margin-bottom: 15px;
-  border: 1px solid black;
+  border: none;
+  background: rgba(197, 182, 241, 0.4);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -48,8 +50,9 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
-  background: white;
   font-weight: 500;
+  background: rgba(197, 182, 241, 0);
+  border-radius: 8px;
 }
 
 .time {
@@ -81,6 +84,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  margin: 10px;
 }
 
 

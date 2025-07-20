@@ -61,7 +61,7 @@ Return your answer strictly as a single JSON array. Each object in the array sho
     "din1": String,               # Canadian Drug Identification Number
     "name": String,               # Name of the food or other substance. {subprompt2}
     "interaction_type": String,   # Type of interaction (e.g. "delayed absorption", "increased side effects", "nausea", "bleeding". THIS IS LIMITED TO 5 WORDS MAX)
-    "severity": String,           # Severity ("mild", "moderate", "severe"). DO NOT overstate the severity. If there may be only cause for concern, label it as "mild" or "moderate" at most.
+    "severity": String,           # Severity (ONLY ONE OF LOWERCASE "mild", "moderate", "severe"). DO NOT overstate the severity. If there may be only cause for concern, label it as "mild" or "moderate" at most.
     "advanced_info": String,      # Scientifically accurate but CONCISE, EASY TO UNDERSTAND, layman-friendly description of the interaction
     "research_links": [           # List of links to research or reference articles (HIGHLY ENCOURAGED)
         "https://example.com/research1"
@@ -127,7 +127,7 @@ Return your answer **strictly as a JSON LIST** of objects with these fields, one
     "drug_name1": String,  # Name of the first drug
     "drug_name2": String,  # Name of the second drug
     "interaction_type": String,  # Type of interaction (Example: Delayed absorption, Increased side effects, prolongation or bleeding. THIS IS LIMITED TO 5 WORDS MAX)
-    "severity": String,  # Severity (ONLY ONE OF "mild", "moderate", or "major" DO NOT USE any weird combinations or other values)
+    "severity": String,  # Severity (ONLY ONE OF LOWERCASE "mild", "moderate", or "major" DO NOT USE any weird combinations or other values)
     "advanced_info": String,  # Concise, layperson-friendly, FACTUAL summary of the interaction. MAKE THIS AS CONCISE AND EASY TO UNDERSTAND AS POSSIBLE. EXPLAIN THE INTERACTION IN SIMPLE TERMS.
     "research_links": [      # List of real, publicly accessible research papers or authoritative sources supporting either the interaction or the safety of these drugs together
         "https://example.com/research1",

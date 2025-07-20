@@ -24,6 +24,7 @@ export function ProfilePage(user) {
             <ProfileHeader name={user.user.name} />
             <MedicationSection user={user} />
             <LogoutButton />
+            
 
         </div>
     );

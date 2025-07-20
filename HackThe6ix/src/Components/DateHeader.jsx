@@ -5,7 +5,7 @@ import '../App.css'
 
 const DateHeader = ({ currentDate, onDateChange, onCalendarToggle }) => {
   return (
-    <div className="date-header">
+    <div className="gradient-header">
       <button className="date-button" onClick={() => onDateChange(addDays(currentDate, -1))}>
         <FiChevronLeft size={24} />
       </button>
