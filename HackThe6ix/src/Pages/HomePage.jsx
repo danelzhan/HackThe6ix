@@ -20,14 +20,15 @@ export function HomePage() {
 
       <div className="active-snippet">
         <h3 className="journal-title">Active Usage Considerations</h3>
+        
 
       </div>
 
-      <div className="refills-snippet">
+      {/* <div className="refills-snippet">
         <h3 className="journal-title">Upcoming Refills</h3>
 
 
-      </div>
+      </div> */}
     </div>
   );
 }
