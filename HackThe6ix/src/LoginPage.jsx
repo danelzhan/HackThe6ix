@@ -1,8 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { postUser } from "./Bridge.js";
 
 
 export function LoginPage(user) {
+
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    // Format as your JSON object
+    const data = {
+      ...form,
+      age: Number(form.age),
+      allergies: form.allergies
+        ? form.allergies.split(",").map((s) => s.trim()).filter(Boolean)
+        : [],
+      medical_history: form.medical_history
+        ? form.medical_history.split(",").map((s) => s.trim()).filter(Boolean)
+        : [],
+      nodes: [],
+      edges: [],
+    };
+    // Call the passed-in function with the JSON object
+    postUser(JSON.stringify(data, null, 2)); // fallback
+
+  };
 
     const navigate = useNavigate();
 
@@ -23,25 +44,6 @@ export function LoginPage(user) {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Parse allergies and medical_history as arrays, split by comma
-    const data = {
-      ...form,
-      age: Number(form.age),
-      allergies: form.allergies
-        ? form.allergies.split(",").map((s) => s.trim()).filter(Boolean)
-        : [],
-      medical_history: form.medical_history
-        ? form.medical_history.split(",").map((s) => s.trim()).filter(Boolean)
-        : [],
-      nodes: [],
-      edges: [],
-    };
-    if (onSubmit) onSubmit(data);
-    else alert(JSON.stringify(data, null, 2));
   };
 
   return (
