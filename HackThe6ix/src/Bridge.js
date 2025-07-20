@@ -48,12 +48,16 @@ export async function fetchCurrentUser() {
 }
 
 export async function postNode(node, patient_ID) {
-    fetch(`${BRIDGE_URL}/patients/add_node/${patient_ID}`, {
+
+    console.log(patient_ID)
+    const wrapped = { node };
+    fetch(`${BRIDGE_URL}/patients/add_node/${patient_ID.user._id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-    },
-        body: JSON.stringify(node),
+    },  
+        
+        body: JSON.stringify(wrapped),
     })
     .then(response => response.json())
     .then(data => console.log(data));

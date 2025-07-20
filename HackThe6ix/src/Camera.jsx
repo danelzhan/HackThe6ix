@@ -9,6 +9,7 @@ export function Camera( {updateDrugs, user} ) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [photo, setPhoto] = useState(null);
+  console.log("first" + user)
 
   useEffect(() => {
     if (!photo) {
@@ -48,7 +49,7 @@ export function Camera( {updateDrugs, user} ) {
 
           setPhoto(image);
           const drug = await main()
-          console.log(jsodrug)
+          console.log(drug)
 
           postNode(drug, user)
 

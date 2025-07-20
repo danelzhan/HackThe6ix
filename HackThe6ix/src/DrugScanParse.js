@@ -32,7 +32,7 @@ export async function main() {
     const drug = new Drug(
         drugProductData[0]?.brand_name || "",
         drugIngredientData[0]?.ingredient_name || "",
-        Number(drugProductData[0]?.drug_identification_number) || "",
+        drugProductData[0]?.drug_identification_number || "",
         drugFormData[0]?.pharmaceutical_form_name || "",
         "", // dosage
         "", // frequency

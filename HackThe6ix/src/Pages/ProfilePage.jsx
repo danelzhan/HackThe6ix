@@ -3,14 +3,16 @@ import LoginButton from '../Components/LoginButton';
 import LogoutButton from '../Components/LogoutButton';
 import { ProfileHeader } from '../Components/ProfileHeader';
 import { MedicationSection } from '../Components/MedicationSection';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 export function ProfilePage({user}) {
 
+    const navigate = useNavigate()
+
     console.log(user)
 
-    if (user.user == null) {
+    if (user == null) {
         return (
             <LoginButton />
         )
@@ -18,7 +20,8 @@ export function ProfilePage({user}) {
     return (
         <div className="app">
 
-            <ProfileHeader name={user.user.name} />
+            <ProfileHeader name={user.name} />
+            <p onClick={() => {navigate("/camera")}}>Add more.</p>
             <LogoutButton />
             
 
