@@ -7,7 +7,7 @@ import { JournalPage } from './Pages/JournalPage.jsx';
 import { InteractionsPage } from './Pages/InteractionsPage.jsx';
 import { ProfilePage } from './Pages/ProfilePage.jsx';
 import { MedicationForm } from './Pages/MedicationForm.jsx';
-import { LoginPage } from './LoginPage.jsx';
+// import { LoginPage } from './LoginPage.jsx';
 
 import { AddDrugPage } from './Pages/AddDrugPage.jsx';
 import { ForumPage } from './Pages/Forum.jsx';
