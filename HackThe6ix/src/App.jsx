@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { fetchUserByEmail, postUser, useFetchCurrentUser } from './Bridge.js';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { postUser, fetchUserByEmail } from './Bridge.js';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { HomePage } from "./Pages/HomePage.jsx"
 import { JournalPage } from './Pages/JournalPage.jsx';
 import { InteractionsPage } from './Pages/InteractionsPage.jsx';
@@ -15,10 +15,12 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import ScatterPlotOutlinedIcon from '@mui/icons-material/ScatterPlotOutlined';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
+import { SignupPage } from './Signup.jsx';
 
 function App() {
   var [userObj, setUserObj] = useState(null); // Add this line
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Hide nav bar on /camera
   const showNavBar = location.pathname !== "/camera";
@@ -68,14 +70,15 @@ function App() {
   useEffect(() => {
     if (isAuthenticated && user) {
       (async () => {
-        try {
-          console.log(user.email)
-          const fetchedUser = await fetchUserByEmail(user.email);
-          setUserObj(fetchedUser);
-          
-        } catch (error) {
-          console.error('Error fetching user:', error);
+        console.log(user.email)
+        const fetchedUser = await fetchUserByEmail(user.email);
+        setUserObj(fetchedUser);
+        if (user == null) {
+          navigate("/login")
+        } else {
+          navigate("/profile")
         }
+        
       })();
     }
   }, [isAuthenticated, user]);
@@ -90,8 +93,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage user={user} />} />
         <Route path="/camera" element={<AddDrugPage user ={user}/>} />
         <Route path="/forum" element={<ForumPage />} />
-        <Route path="/journal/medication-form" element={<MedicationForm />} />
-        <Route path="/login" element={<LoginPage user ={user}/>} />
+        <Route path="/login" element={<SignupPage user={userObj} />}></Route>
       </Routes>
       
     {showNavBar && (

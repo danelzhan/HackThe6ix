@@ -10,27 +10,23 @@ export function ProfilePage({user}) {
 
     console.log(user)
 
-    if (user == null) {
-        console.log("noUser")
+    if (user.user == null) {
         return (
-            <div id='ProfileLoginButton'>
-                <LoginButton />
-                <LogoutButton />
-            </div>
+            <LoginButton />
         )
-    }
-
+    } else {
     return (
         <div className="app">
-            <ProfileHeader name={user.name} />
-            <div>
-                <MedicationSection user={user} />
-                <Link to="/camera">Add more</Link>
-            </div>
-           
+
+            <ProfileHeader name={user.user.name} />
             <LogoutButton />
             
 
         </div>
     );
+    }
+
+    
+
+
 }
