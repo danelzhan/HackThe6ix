@@ -4,6 +4,15 @@
     cursor: pointer;
     font-size: 1.2rem;
     font-weight: 600;
+    width: 3vw;
+}
+
+.journal-snippet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px; 
 }
 
 .select-space {
@@ -11,6 +20,7 @@
     background-color: white;
     padding: 10px;
     border-radius: 6px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 a {
@@ -37,8 +47,10 @@ input, select, textarea {
   width: 200px;
 }
 
+
 textarea{
     width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 input:focus, select:focus, textarea:focus {
@@ -109,7 +121,7 @@ textarea {
   align-items: center;
   margin-bottom: 20px;
   
-  margin-top: 200px;
+  margin-top: 20vw;
   border-bottom: 1px solid grey;
 }
 
@@ -157,8 +169,14 @@ textarea {
   margin-bottom: 15px;
   border: none;
   background: rgba(197, 182, 241, 0.4);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   overflow: hidden;
+}
+
+.time-block:last-child
+{
+  margin-bottom: 5vw;
 }
 
 .time-header {
@@ -190,6 +208,7 @@ textarea {
   border-radius: 8px;
   cursor: pointer;
   border: none;
+
 }
 
 /* Medications list */
