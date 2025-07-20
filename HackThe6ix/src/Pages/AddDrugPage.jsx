@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className="app">
-      <DrugInteractionGraph patientEmail="john.doe@email.com" />
+      <DrugInteractionGraph />
       <Camera />
     </div>
   );

@@ -3,10 +3,10 @@ import { Network } from 'vis-network';
 import { DataSet } from 'vis-data';
 import 'vis-network/styles/vis-network.css';
 import { FaPills, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa';
-import { fetchUserByEmail } from '../Bridge.js';
+import { useFetchCurrentUser } from '../Bridge.js';
 
 
-const DrugInteractionGraph = ({ patientEmail }) => {
+const DrugInteractionGraph = () => {
   const networkRef = useRef(null);
   const containerRef = useRef(null);
   const [tooltip, setTooltip] = useState({ 
@@ -17,13 +17,14 @@ const DrugInteractionGraph = ({ patientEmail }) => {
   });
   const [interactions, setInteractions] = useState([]);
   const [patientNodes, setPatientNodes] = useState([]);
+  const { fetchCurrentUser, userEmail, isAuthenticated } = useFetchCurrentUser();
 
   // Fetch real interactions and nodes from backend
   useEffect(() => {
     const fetchPatientData = async () => {
-      if (patientEmail) {
+      if (isAuthenticated && userEmail) {
         try {
-          const patient = await fetchUserByEmail(patientEmail);
+          const patient = await fetchCurrentUser();
           
           if (patient) {
             // Extract nodes and edges from the Patient object
@@ -39,7 +40,7 @@ const DrugInteractionGraph = ({ patientEmail }) => {
     };
     
     fetchPatientData();
-  }, [patientEmail]);
+  }, [isAuthenticated, userEmail, fetchCurrentUser]);
 
   // Helper function to map backend severity to display type
   const mapSeverityToType = (severity) => {
