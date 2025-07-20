@@ -126,6 +126,19 @@ input {
 .add-med {
   cursor: pointer;
   color: #1976d2;
+  margin: 10px;
+}
+
+.time-block-button {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background: rgba(197, 182, 241, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
 }
 
 /* Medications list */
