@@ -122,3 +122,30 @@ body {
 .manual-input-btn:active {
   background: #cfd8ff;
 }
+
+#login_button {
+  width: 300px;
+  height: 56px;
+  background: linear-gradient(90deg, #6680ff 0%, #a0b5ff 100%);
+  color: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 28px;
+  box-shadow: 0 2px 8px rgba(102, 128, 255, 0.08);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  letter-spacing: 0.02em;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#login_button:hover {
+  background: linear-gradient(90deg, #5570dd 0%, #87a1f7 100%);
+  box-shadow: 0 4px 18px rgba(102, 128, 255, 0.15);
+  transform: translateY(-2px) scale(1.01);
+}

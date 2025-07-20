@@ -10,7 +10,7 @@ createRoot(document.getElementById('root')).render(
     domain="dev-cg6bd6y3gzvggvzl.us.auth0.com"
     clientId="MLjAtFC1AOA9V9nEjFATFppUPwG7KdzK"
     authorizationParams={{
-      redirect_uri: "http://localhost:5173/profile"
+      redirect_uri: "http://localhost:5173/login"
     }}
   >
     <BrowserRouter>

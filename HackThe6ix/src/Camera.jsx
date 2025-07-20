@@ -50,7 +50,7 @@ export function Camera( {updateDrugs, user} ) {
           const drug = await main()
           console.log(drug)
 
-          
+          console.log(user.user)
 
       }
     };

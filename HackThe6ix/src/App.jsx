@@ -7,6 +7,7 @@ import { JournalPage } from './Pages/JournalPage.jsx';
 import { InteractionsPage } from './Pages/InteractionsPage.jsx';
 import { ProfilePage } from './Pages/ProfilePage.jsx';
 import { MedicationForm } from './Pages/MedicationForm.jsx';
+import { LoginPage } from './LoginPage.jsx';
 
 import { AddDrugPage } from './Pages/AddDrugPage.jsx';
 import { ForumPage } from './Pages/Forum.jsx';
@@ -85,6 +86,7 @@ function App() {
         <Route path="/camera" element={<AddDrugPage />} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/journal/medication-form" element={<MedicationForm />} />
+        <Route path="/login" element={<LoginPage user ={userObj}/>} />
       </Routes>
       
     {showNavBar && (
