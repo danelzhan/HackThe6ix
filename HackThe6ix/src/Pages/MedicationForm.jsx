@@ -47,14 +47,14 @@ export function MedicationForm() {
             value={medicationName}
             onChange={(e) => setMedicationName(e.target.value)}
             required
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-3 border rounded-lg select-space"
           />
           <input
             type="text"
             placeholder="Drug ID Number (DIN)"
             value={din}
             onChange={(e) => setDin(e.target.value)}
-            className="w-full p-3 border rounded-lg"
+            className="w-full p-3 border rounded-lg select-space"
           />
         </div>
 
