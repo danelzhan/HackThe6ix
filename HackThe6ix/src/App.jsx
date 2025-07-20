@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { postUser, useFetchCurrentUser } from './Bridge.js';
+import { fetchUserByEmail, postUser, useFetchCurrentUser } from './Bridge.js';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { HomePage } from "./Pages/HomePage.jsx"
 import { JournalPage } from './Pages/JournalPage.jsx';
@@ -18,7 +18,6 @@ import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 
 function App() {
   var [userObj, setUserObj] = useState(null); // Add this line
-  const { fetchCurrentUser } = useFetchCurrentUser();
   const location = useLocation();
 
   // Hide nav bar on /camera
@@ -71,14 +70,14 @@ function App() {
       (async () => {
         try {
           console.log(user.email)
-          const fetchedUser = await fetchCurrentUser();
+          const fetchedUser = await fetchUserByEmail(user.email);
           setUserObj(fetchedUser);
         } catch (error) {
           console.error('Error fetching user:', error);
         }
       })();
     }
-  }, [isAuthenticated, user, fetchCurrentUser]);
+  }, [isAuthenticated, user]);
 
   return (
     <div className="app">
@@ -88,10 +87,10 @@ function App() {
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
         <Route path="/profile" element={<ProfilePage user={userObj} />} />
-        <Route path="/camera" element={<AddDrugPage />} />
+        <Route path="/camera" element={<AddDrugPage user ={user}/>} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/journal/medication-form" element={<MedicationForm />} />
-        <Route path="/login" element={<LoginPage user ={userObj}/>} />
+        <Route path="/login" element={<LoginPage user ={user}/>} />
       </Routes>
       
     {showNavBar && (
