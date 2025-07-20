@@ -33,7 +33,7 @@ const WelcomeHeader = ({ name }) => {
     return (
         <div className="gradient-header">
         
-         <h1>{greeting}{name ? `, ${name}` : ''}!</h1>
+         <h3>{greeting}{name ? `, ${name}` : ''}!</h3>
         
         </div>
     );
