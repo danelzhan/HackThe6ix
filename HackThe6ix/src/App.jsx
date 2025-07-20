@@ -7,7 +7,6 @@ import { JournalPage } from './Pages/JournalPage.jsx';
 import { InteractionsPage } from './Pages/InteractionsPage.jsx';
 import { ProfilePage } from './Pages/ProfilePage.jsx';
 import { MedicationForm } from './Pages/MedicationForm.jsx';
-import { LoginPage } from './LoginPage.jsx';
 
 import { AddDrugPage } from './Pages/AddDrugPage.jsx';
 import { ForumPage } from './Pages/Forum.jsx';
@@ -90,8 +89,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/journal" element={<JournalPage />} />
         <Route path="/interactions" element={<InteractionsPage medications={medications} />} />
-        <Route path="/profile" element={<ProfilePage user={user} />} />
-        <Route path="/camera" element={<AddDrugPage user ={user}/>} />
+        <Route path="/profile" element={<ProfilePage user={userObj} />} />
+        <Route path="/camera" element={<AddDrugPage user ={userObj}/>} />
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/login" element={<SignupPage user={userObj} />}></Route>
       </Routes>

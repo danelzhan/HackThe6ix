@@ -298,11 +298,16 @@ def add_patient_node(patient_id):
         data = request.get_json()
         node = data.get('node')
         logging.info(f"Adding node: {node} to patient: {patient_id}")
-        if not patient_id or not node:
+        if not patient_id:
             return jsonify({
                 "success": False,
-                "error": "Missing patient_id or node data"
+                "error": "Missing patient_id"
             }), 400
+        if not node:
+            return jsonify({
+                "success": False,
+                "error": "Missing node"
+            })
         print("1")
         # Get current patient data
         patient_data = database.get_patient_by_id(patient_id)
