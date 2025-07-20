@@ -48,13 +48,24 @@ export async function fetchCurrentUser() {
 }
 
 export async function postNode(node, patient_ID) {
-    fetch(`${BRIDGE_URL}/patients/add_node/${patient_ID}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-    },
-        body: JSON.stringify(node),
-    })
-    .then(response => response.json())
-    .then(data => console.log(data));
+    try {
+        const response = await fetch(`${BRIDGE_URL}/patients/add_node/${patient_ID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(node),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Successfully added node:', data);
+        return data;
+    } catch (error) {
+        console.error('Error in postNode:', error);
+        throw error; // Re-throw so calling code can catch it
+    }
 }
