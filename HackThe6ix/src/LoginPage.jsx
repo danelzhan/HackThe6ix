@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { postUser } from "./Bridge.js";
 
 
-export function LoginPage(user) {
+export function LoginPage({user}) {
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,15 +23,9 @@ export function LoginPage(user) {
     };
     // Call the passed-in function with the JSON object
     postUser(JSON.stringify(data, null, 2)); // fallback
+    navigate("/profile")
 
   };
-
-    const navigate = useNavigate();
-
-    if (user.user != null) {
-        console.log(user.user)
-        navigate("/profile"); 
-    }
 
   const [form, setForm] = useState({
     _id: "",
